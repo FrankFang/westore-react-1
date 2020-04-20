@@ -1,6 +1,6 @@
-import Nav from './Nav';
 import React from 'react';
 import styled from 'styled-components';
+import {Topbar, TopbarProps} from './Topbar';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -11,13 +11,14 @@ const Main = styled.div`
   flex-grow: 1;
   overflow: auto;
 `;
-const Layout = (props: any) => {
+type Props = {} & TopbarProps;
+const Layout: React.FC<Props> = (props) => {
   return (
     <Wrapper>
+      <Topbar title={props.title}/>
       <Main>
         {props.children}
       </Main>
-      <Nav/>
     </Wrapper>
   );
 };
