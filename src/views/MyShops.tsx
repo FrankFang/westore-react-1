@@ -7,7 +7,7 @@ import useSWR, {SWRConfig} from 'swr';
 const Wrapper: React.FC = () => {
   console.log('useSWR');
   const {data, error} = useSWR<any, any>('/shop', (url) => {
-    return defaultHttpClient.get<any>(url, {autoHint: true});
+    return defaultHttpClient.get<any>(url, {autoHandlerError: true});
   });
   return (
     <div>
