@@ -1,43 +1,12 @@
 import React, {useState} from 'react';
-import Icon from 'components/Icon';
-import styled from 'styled-components';
 import {Input} from '../components/Input';
-import vars from '_vars.scss';
 import {MainButton} from '../components/button/MainButton';
-import {defaultHttpClient} from '../lib/HttpClient';
 import {validate} from '../lib/validate';
 import {useSendCodeButton} from '../hooks/useSendCodeButton';
 import {Form, FormRow} from '../components/Form';
 import {InputError} from '../components/InputError';
+import {Center, Header, Logo, Main, Space, Wrapper} from './SignIn.styled';
 
-const Logo = styled(Icon)`
-  width: 100px;
-  height: 100px;
-`;
-const Header = styled.header`
-  padding-top: 100px; 
-  text-align:center;
-  margin-bottom: 16px;
-  .icon {
-    fill: ${vars.colorMain};
-  }
-  h1{margin-top: 0; font-size: 20px;}
-`;
-const Main = styled.div`
-
-`;
-const Wrapper = styled.div`
-  background:white;
-  min-height: 100vh;
-`;
-const Center = styled.div`
-  display:flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Space = styled.div`
-  height: 16px;
-`;
 
 export const SignIn: React.FC = () => {
   type Errors = { [K in keyof typeof formData]?: string[] } | null
