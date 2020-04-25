@@ -1,7 +1,7 @@
 import React, {ReactElement, ReactFragment, ReactNode} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import {Button} from './Button';
+import {MainButton} from './button/MainButton';
 
 interface Props {
   visible: boolean;
@@ -96,10 +96,10 @@ let latestAlert: ReturnType<typeof alert> | null = null;
 const alert = (content: ReactNode, callback?: () => void): () => void => {
   latestAlert?.();
   const close = createModal(content,
-    <Button onClick={() => {
+    <MainButton onClick={() => {
       close();
       callback?.();
-    }}>确定</Button>);
+    }}>确定</MainButton>);
   return latestAlert = close;
 };
 
