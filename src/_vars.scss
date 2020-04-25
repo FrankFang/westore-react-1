@@ -3,9 +3,11 @@ $font-hei: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans
 $border-radius: 4px;
 
 $color-main: #2452ff;
+$color-dander: red;
 
 :export {
   fontHei: $font-hei;
   borderRadius: $border-radius;
   colorMain: $color-main;
+  colorDanger: $color-dander;
 }

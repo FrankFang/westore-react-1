@@ -3,7 +3,7 @@ import {alert} from 'components/Dialog';
 import {history, pathnameBeforeSignIn} from './history';
 
 export interface RequestConfig extends AxiosRequestConfig {
-  autoHandlerError?: boolean
+  autoHandlerError?: boolean | ((error: any) => boolean);
 }
 
 class HttpClient {
@@ -28,39 +28,41 @@ class HttpClient {
         method === 'post' ? this.client.post<T>(url!, data, config) :
           method === 'patch' ? this.client.patch<T>(url!, data, config) :
             method === 'delete' ? this.client.patch<T>(url!, config) : undefined as never;
-    if (autoHandlerError) {
-      return promise.then(null, (error) => this.handleError?.(error));
-    } else {
-      return promise;
-    }
+    return promise.then(null, (error) => {
+      if (typeof autoHandlerError === 'function' ? autoHandlerError(error) : autoHandlerError) {
+        return this.handleError?.(error);
+      } else {
+        Promise.reject(error);
+      }
+    });
   }
 
   get<T>(url: string, options?: RequestConfig) {
-    this.ajax<T>({...options, url, method: 'get'});
+    return this.ajax<T>({...options, url, method: 'get'});
   }
 
   post<T>(url: string, data?: unknown, options?: RequestConfig) {
-    this.ajax<T>({...options, method: 'post'});
+    return this.ajax<T>({...options, url, data, method: 'post'});
   }
 
   patch<T>(url: string, data?: unknown, options?: RequestConfig) {
-    this.ajax<T>({...options, method: 'patch'});
+    return this.ajax<T>({...options, url, data, method: 'patch'});
   }
 
   delete<T>(url: string, options: RequestConfig) {
-    this.ajax<T>({...options, url, method: 'delete'});
+    return this.ajax<T>({...options, url, method: 'delete'});
   }
 }
 
 const defaultHttpClient = new HttpClient('http://localhost:8080/api/v1/', (error) => {
   if (error.isAxiosError) {
     if ((error as AxiosError).response?.status === 401) {
-      return alert('请先登录', () => {
-        pathnameBeforeSignIn.value = history.location.pathname
+      alert('请先登录', () => {
+        pathnameBeforeSignIn.value = history.location.pathname;
         history.push('/sign_in');
       });
     }
   }
-  throw error;
+  return Promise.reject(error);
 });
 export {defaultHttpClient, HttpClient};

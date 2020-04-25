@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {history, pathnameBeforeSignIn} from '../lib/history';
 import Icon from 'components/Icon';
 import styled from 'styled-components';
 import {Input} from '../components/Input';
 import vars from '_vars.scss';
 import {MainButton} from '../components/button/MainButton';
-import {MinorButton} from '../components/button/MinorButton';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {validate} from '../lib/validate';
+import {useSendCodeButton} from '../hooks/useSendCodeButton';
+import {Form, FormRow} from '../components/Form';
+import {InputError} from '../components/InputError';
 
 const Logo = styled(Icon)`
   width: 100px;
@@ -25,19 +26,9 @@ const Header = styled.header`
 const Main = styled.div`
 
 `;
-const Form = styled.form`
-  padding: 0 16px;
-`;
 const Wrapper = styled.div`
   background:white;
   min-height: 100vh;
-`;
-const FormRow = styled.div`
-  margin: 8px 0;
-  display:flex;
-  > * + * {
-    margin-left: 8px; 
-  }
 `;
 const Center = styled.div`
   display:flex;
@@ -49,13 +40,13 @@ const Space = styled.div`
 `;
 
 export const SignIn: React.FC = () => {
-  type Errors = { [K in keyof typeof formData]: string[] } | null
+  type Errors = { [K in keyof typeof formData]?: string[] } | null
   const [errors, setErrors] = useState<Errors>(null);
   const onSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();
     const errors = await validate(formData, {
-      tel: [{required: true, message: '必填'}, {format: 'china phone', message: '手机号码格式不正确'}],
-      code: [{required: true, message: '必填'}]
+      tel: [{required: true}, {format: 'china phone'}],
+      code: [{required: true}]
     });
     setErrors(errors);
     // history.push(pathnameBeforeSignIn.value || '/');
@@ -64,9 +55,18 @@ export const SignIn: React.FC = () => {
     tel: '',
     code: ''
   });
-  const sendCode = () => {
-    defaultHttpClient.post('/api/v1/code', {tel: formData.tel});
-  };
+  const {setCodeSent, sendCodeButton} = useSendCodeButton(async () => {
+    const errors = await validate({tel: formData.tel}, {
+      tel: [{required: true}, {format: 'china phone'}]
+    });
+    setErrors(errors);
+    if (!errors) {
+      // await defaultHttpClient.post('/code', {tel: formData.tel}, {
+      //   autoHandlerError: (error) => error.response?.status !== 401
+      // });
+      setCodeSent(true);
+    }
+  });
   return (
     <Wrapper>
       <Header>
@@ -85,11 +85,9 @@ export const SignIn: React.FC = () => {
                 });
               }}/>
           </FormRow>
-          {errors?.['tel'] && (
-            <FormRow>
-              {errors['tel'][0]}
-            </FormRow>
-          )}
+          <FormRow>
+            <InputError value={errors?.tel?.[0]}/>
+          </FormRow>
           <FormRow>
             <Input type="text" placeholder="验证码"
               value={formData.code}
@@ -99,13 +97,11 @@ export const SignIn: React.FC = () => {
                   code: (e.target as HTMLInputElement).value
                 });
               }}/>
-            <MinorButton onClick={sendCode}>发送验证码</MinorButton>
+            {sendCodeButton}
           </FormRow>
-          {errors?.['code'] && (
-            <FormRow>
-              {errors['code'][0]}
-            </FormRow>
-          )}
+          <FormRow>
+            <InputError value={errors?.code?.[0]}/>
+          </FormRow>
           <Space/>
           <Space/>
           <Center>

@@ -1,5 +1,3 @@
-import {Simulate} from 'react-dom/test-utils';
-
 type RuleForValue = { message?: string } & (
   | { required: boolean }
   | { format: FormatOptions }
@@ -31,9 +29,15 @@ interface Validator<O = any> {
   (options: ValidatorOptions<O>): void
 }
 
+const translation = {
+  required: '必填',
+  format: '格式不正确',
+  length: '长度不符合要求'
+};
+
 const required: Validator = ({params, message, value, key, formData, callback}) => {
   if (value === undefined || value === null || value === '') {
-    callback(message ?? 'required');
+    callback(message ?? translation['required']);
   } else {
     callback();
   }
@@ -44,7 +48,7 @@ const length: Validator = ({params, message, value, key, formData, callback}) =>
   min = min ?? -Infinity;
   max = max ?? Infinity;
   if (string.length > max || string.length < min) {
-    callback(message ?? `length`);
+    callback(message ?? translation['length']);
   } else {
     callback();
   }
@@ -61,7 +65,7 @@ const format: Validator = ({params, message, value, key, formData, callback}) =>
   if (pattern.test(string)) {
     callback();
   } else {
-    callback(message ?? 'format');
+    callback(message ?? translation['format']);
   }
 };
 
@@ -102,10 +106,10 @@ const validate = <T extends FormData>(formData: T, rules: RulesForFormData<T>) =
       if (!(key in object)) {
         object[key] = [value];
       } else {
-        object[key].push(value);
+        object[key]!.push(value);
       }
       return object;
-    }, {} as { [K in keyof T]: (string)[] });
+    }, {} as { [K in keyof T]?: (string)[] });
   }).then(values => Object.keys(values).length === 0 ? null : values);
 };
 

@@ -39,7 +39,8 @@ const UnstyledButton: React.FC<Props> = (props) => {
 };
 UnstyledButton.defaultProps = {
   autoDisable: true,
-  autoDisableDuration: 1000
+  autoDisableDuration: 1000,
+  type: 'button'
 };
 
 export {UnstyledButton};
