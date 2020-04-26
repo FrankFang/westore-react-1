@@ -1,5 +1,4 @@
 import React from 'react';
-import {FormRow} from './Form';
 import styled from 'styled-components';
 import vars from '_vars.scss';
 

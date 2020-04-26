@@ -5,10 +5,14 @@ import {validate} from '../lib/validate';
 import {useSendCodeButton} from '../hooks/useSendCodeButton';
 import {Form, FormRow} from '../components/Form';
 import {InputError} from '../components/InputError';
-import {Center, Header, Logo, Main, Space, Wrapper} from './SignIn.styled';
-
+import {Header, Logo, Main, Wrapper} from './SignIn.styled';
+import {defaultHttpClient} from '../lib/HttpClient';
+import {pathnameBeforeSignIn, history} from '../lib/history';
+import {Center} from '../components/Center';
+import {Space} from '../components/Space';
 
 export const SignIn: React.FC = () => {
+  const [formData, setFormData] = useState({tel: '', code: ''});
   type Errors = { [K in keyof typeof formData]?: string[] } | null
   const [errors, setErrors] = useState<Errors>(null);
   const onSubmit: React.FormEventHandler = async (e) => {
@@ -18,21 +22,31 @@ export const SignIn: React.FC = () => {
       code: [{required: true}]
     });
     setErrors(errors);
-    // history.push(pathnameBeforeSignIn.value || '/');
+    if (errors) {return; }
+    await defaultHttpClient.post(`/login`, formData, {
+      autoHandlerError: (error) => ![400, 403].includes(error.response?.status)
+    }).then(null, (error) => {
+      switch (error.response?.status) {
+        case 400:
+          setErrors({tel: ['请求错误']});
+          break;
+        case 403:
+          setErrors({code: ['验证码错误或过期']});
+          break;
+      }
+      throw error;
+    });
+    history.push(pathnameBeforeSignIn.value || '/');
   };
-  const [formData, setFormData] = useState({
-    tel: '',
-    code: ''
-  });
   const {setCodeSent, sendCodeButton} = useSendCodeButton(async () => {
     const errors = await validate({tel: formData.tel}, {
       tel: [{required: true}, {format: 'china phone'}]
     });
     setErrors(errors);
     if (!errors) {
-      // await defaultHttpClient.post('/code', {tel: formData.tel}, {
-      //   autoHandlerError: (error) => error.response?.status !== 401
-      // });
+      await defaultHttpClient.post('/code', {tel: formData.tel}, {
+        autoHandlerError: (error) => error.response?.status !== 401
+      });
       setCodeSent(true);
     }
   });

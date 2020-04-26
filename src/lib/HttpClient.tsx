@@ -12,13 +12,19 @@ class HttpClient {
 
   constructor(
     public baseUrl: string,
-    public handleError?: (error: any) => void
+    public handleError?: (error: any) => Promise<any>
   ) {
     this.client = axios.create({
       baseURL: baseUrl, // 注意大小写
       timeout: 10 * 1000,
-      headers: {}
+      headers: {},
+      withCredentials: true,
     });
+    this.testMock()
+  }
+
+  testMock(){
+
   }
 
   ajax<T>(options: RequestConfig) {
@@ -28,13 +34,15 @@ class HttpClient {
         method === 'post' ? this.client.post<T>(url!, data, config) :
           method === 'patch' ? this.client.patch<T>(url!, data, config) :
             method === 'delete' ? this.client.patch<T>(url!, config) : undefined as never;
-    return promise.then(null, (error) => {
-      if (typeof autoHandlerError === 'function' ? autoHandlerError(error) : autoHandlerError) {
-        return this.handleError?.(error);
+    const x: typeof promise = promise.then(null, (error) => {
+      if ((typeof autoHandlerError === 'function' ? autoHandlerError(error) : autoHandlerError)
+        && this.handleError) {
+        return this.handleError(error);
       } else {
         Promise.reject(error);
       }
     });
+    return x;
   }
 
   get<T>(url: string, options?: RequestConfig) {
@@ -54,15 +62,23 @@ class HttpClient {
   }
 }
 
-const defaultHttpClient = new HttpClient('http://localhost:8080/api/v1/', (error) => {
-  if (error.isAxiosError) {
-    if ((error as AxiosError).response?.status === 401) {
-      alert('请先登录', () => {
-        pathnameBeforeSignIn.value = history.location.pathname;
-        history.push('/sign_in');
-      });
+const defaultHttpClient = new HttpClient(
+  'http://localhost:8080/api/v1/',
+  // ' https://www.easy-mock.com/mock/5ea4c9f817ddcd6a5d7c5db7/api/v1/',
+  (error) => {
+    if (error.isAxiosError) {
+      const {response} = error as AxiosError;
+      if (response === undefined) {
+        alert('网络错误');
+      } else if (response?.status === 401) {
+        alert('请先登录', () => {
+          pathnameBeforeSignIn.value = history.location.pathname;
+          history.push('/sign_in');
+        });
+      } else if (response?.status >= 400) {
+        alert(`服务器繁忙，错误码：${response.status}`);
+      }
     }
-  }
-  return Promise.reject(error);
-});
+    return Promise.reject(error);
+  });
 export {defaultHttpClient, HttpClient};

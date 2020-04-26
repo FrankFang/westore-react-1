@@ -22,11 +22,4 @@ export const Wrapper = styled.div`
   background:white;
   min-height: 100vh;
 `;
-export const Center = styled.div`
-  display:flex;
-  justify-content: center;
-  align-items: center;
-`;
-export const Space = styled.div`
-  height: 16px;
-`;
+

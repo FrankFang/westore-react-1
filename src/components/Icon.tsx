@@ -1,6 +1,6 @@
 import React from 'react';
+import {importAll} from 'lib/importAll';
 
-let importAll = (requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
 try {importAll(require.context('icons', true, /\.svg$/));} catch (error) {console.log(error);}
 
 interface Props extends React.SVGAttributes<SVGElement> {
