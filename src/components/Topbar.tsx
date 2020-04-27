@@ -1,26 +1,34 @@
 import React from 'react';
 import Icon from './Icon';
 import styled from 'styled-components';
+import vars from '_vars.scss';
 
 const Wrapper = styled.div`
   font-size: 24px;
   display:flex;
   justify-content: space-between;
   align-items: center;
-  line-height: 36px;
-  padding: 10px 16px;
+  padding: 0 16px;
   background:white;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid ${vars.colorBorder};
+  height: ${vars.heightHeader};
 `;
-export type TopbarProps = {
+export interface TopbarProps {
   title: string;
+  action?: React.ReactNode
 }
+const Placeholder = styled.div`
+  width: 24px;
+  height: 24px;
+`;
 const Topbar: React.FC<TopbarProps> = (props) => {
   return (
     <Wrapper>
       <Icon name="left"/>
       <span>{props.title}</span>
-      <Icon/>
+      <Placeholder>
+        {props.action}
+      </Placeholder>
     </Wrapper>
   );
 };

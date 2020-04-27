@@ -11,11 +11,15 @@ const Main = styled.div`
   flex-grow: 1;
   overflow: auto;
 `;
-type Props = {} & TopbarProps;
+
+interface Props extends TopbarProps {
+
+}
+
 const Layout: React.FC<Props> = (props) => {
   return (
     <Wrapper>
-      <Topbar title={props.title}/>
+      <Topbar title={props.title} action={props.action}/>
       <Main>
         {props.children}
       </Main>

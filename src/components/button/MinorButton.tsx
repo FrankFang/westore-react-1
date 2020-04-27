@@ -10,6 +10,7 @@ const MinorButton = styled(UnstyledButton)`
   flex-grow: 1;
   background: transparent;
   color: ${vars.colorMain};
+  font-size: 18px;
   &[disabled]{
     border-color:#999;
     color: #999;

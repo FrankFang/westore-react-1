@@ -10,6 +10,7 @@ const MainButton = styled(UnstyledButton)`
   flex-grow: 1;
   background: ${vars.colorMain};
   color: white;
+  font-size: 18px;
   &[disabled]{
     background:#999;
   }

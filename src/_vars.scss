@@ -4,10 +4,17 @@ $border-radius: 4px;
 
 $color-main: #2452ff;
 $color-dander: red;
+$color-border: #ccc;
+
+$height-header: 56px;
+$height-item: 56px;
 
 :export {
   fontHei: $font-hei;
   borderRadius: $border-radius;
   colorMain: $color-main;
   colorDanger: $color-dander;
+  colorBorder: $color-border;
+  heightHeader: $height-header;
+  heightItem: $height-item;
 }
