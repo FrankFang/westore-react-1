@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig, AxiosInstance, AxiosError} from 'axios';
-import {alert} from 'components/Dialog';
+import {showAlert} from 'components/Dialog';
 import {history, pathnameBeforeSignIn} from './history';
 
 export interface RequestConfig extends AxiosRequestConfig {
@@ -69,14 +69,14 @@ const defaultHttpClient = new HttpClient(
     if (error.isAxiosError) {
       const {response} = error as AxiosError;
       if (response === undefined) {
-        alert('网络错误');
+        showAlert('网络错误');
       } else if (response?.status === 401) {
-        alert('请先登录', () => {
+        showAlert('请先登录', () => {
           pathnameBeforeSignIn.value = history.location.pathname;
           history.push('/sign_in');
         });
       } else if (response?.status >= 400) {
-        alert(`服务器繁忙，错误码：${response.status}`);
+        showAlert(`服务器繁忙，错误码：${response.status}`);
       }
     }
     return Promise.reject(error);

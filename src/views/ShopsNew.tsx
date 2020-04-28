@@ -11,6 +11,8 @@ import {defaultHttpClient} from '../lib/HttpClient';
 import {Loading} from '../components/Loading';
 import {validate} from '../lib/validate';
 import {InputError} from '../components/InputError';
+import {showAlert} from '../components/Dialog';
+import {history} from '../lib/history';
 
 const MyForm = styled(Form)`
   background:white;
@@ -18,12 +20,10 @@ const MyForm = styled(Form)`
 `;
 
 export const ShopsNew: React.FC = () => {
-  const {mutate, data: shop} = useSWR('/shops/new', {
-    initialData: {
-      name: '',
-      description: '',
-      imgUrl: '',
-    }
+  const [shop, setShop] = useState({
+    name: '',
+    description: '',
+    imgUrl: '',
   });
   const [errors, setErrors] = useState<ErrorsFor<typeof shop>>(null);
   if (!shop) {return <Loading/>;}
@@ -36,6 +36,9 @@ export const ShopsNew: React.FC = () => {
     setErrors(errors);
     if (!errors) {
       await defaultHttpClient.post('/shop', shop, {autoHandlerError: true});
+      showAlert('创建成功', () => {
+        history.push('/admin/shops');
+      });
     }
   };
   return (
@@ -43,7 +46,7 @@ export const ShopsNew: React.FC = () => {
       <MyForm onSubmit={onSubmit}>
         <FormRow>
           <Input placeholder="* 店铺名称" value={shop.name} onChange={(e) => {
-            mutate({...shop, name: e.target.value});
+            setShop({...shop, name: e.target.value});
           }}/>
         </FormRow>
         <FormRow>
@@ -51,15 +54,15 @@ export const ShopsNew: React.FC = () => {
         </FormRow>
         <FormRow>
           <Input placeholder="* 店铺描述" value={shop.description} onChange={e => {
-            mutate({...shop, description: e.target.value});
+            setShop({...shop, description: e.target.value});
           }}/>
         </FormRow>
         <FormRow>
           <InputError value={errors?.description?.[0]}/>
         </FormRow>
         <FormRow>
-          <Input placeholder="店铺Logo" value={shop.imgUrl} onChange={e => {
-            mutate({...shop, imgUrl: e.target.value});
+          <Input placeholder="店铺Logo，请填入图片网址" value={shop.imgUrl} onChange={e => {
+            setShop({...shop, imgUrl: e.target.value});
           }}/>
         </FormRow>
         <FormRow>

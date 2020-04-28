@@ -91,9 +91,9 @@ const createModal = (content: ReactNode, buttons?: ReactFragment | ReactElement)
   return onClose;
 };
 
-let latestAlert: ReturnType<typeof alert> | null = null;
+let latestAlert: ReturnType<typeof showAlert> | null = null;
 
-const alert = (content: ReactNode, callback?: () => void): () => void => {
+const showAlert = (content: ReactNode, callback?: () => void): () => void => {
   latestAlert?.();
   const close = createModal(content,
     <MainButton onClick={() => {
@@ -104,4 +104,4 @@ const alert = (content: ReactNode, callback?: () => void): () => void => {
 };
 
 
-export {Dialog, alert};
+export {Dialog, showAlert};
