@@ -1,5 +1,5 @@
 import React from 'react';
-import useSWR, {useSWRPages} from 'swr';
+import swr, {useSWRPages} from 'swr';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {Center} from '../components/Center';
 import {Space} from '../components/Space';
@@ -36,18 +36,18 @@ const List = styled.div`
 `;
 const Padding = styled.div`
   padding: 16px;
-`
+`;
 
 export const Wrapper: React.FC = () => {
-  console.log('----------------wrapper---------------');
-  const {pages, loadMore, isReachingEnd, isEmpty, isLoadingMore} = useSWRPages<number, AxiosResponse<PagedResources<Shop>>>(
-    'shop-list',
+  const {
+    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
+  } = useSWRPages<number | null, AxiosResponse<PagedResources<Shop>>>(
+    'shops',
     ({offset, withSWR}) => {
       offset = offset || 0;
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const {data: response} = withSWR(useSWR(`/shop?pageNum=${offset + 1}`, (key) => {
-        return defaultHttpClient.get<PagedResources<Shop>>(key, {
-          params: {pageSize: 10},
+      const {data: response} = withSWR(swr(['/shop', offset + 1, 10], (url, pageNum, pageSize) => {
+        return defaultHttpClient.get<PagedResources<Shop>>(url, {
+          params: {pageNum, pageSize},
           autoHandlerError: true
         });
       }));
@@ -64,37 +64,13 @@ export const Wrapper: React.FC = () => {
         </Item>
       ));
     },
-    // @ts-ignore
     (SWR, index) => {
-      console.log('index');
-      console.log(index);
-      return SWR.data?.data?.totalPage &&
-      SWR.data?.data?.totalPage > 0 && SWR.data?.data.pageNum < SWR.data?.data.totalPage ? index + 1 : null;
+      return SWR.data?.data?.totalPage && SWR.data?.data?.totalPage > 0 && SWR.data?.data.pageNum < SWR.data?.data.totalPage ?
+        index + 1 :
+        null;
     },
     []
   );
-  // const {data, error, mutate} = useSWR('/shop', (url) => {
-  //   return defaultHttpClient.get<PagedResources<Shop>>(url, {
-  //     params: {pageNum: 1, pageSize: 10},
-  //     autoHandlerError: true
-  //   });
-  // });
-  // const shops = data?.data.data; // holy shit!
-  // const fail = (
-  //   <Center>
-  //     <Space/>
-  //     请求数据错误
-  //     <Space/>
-  //     <MainButton onClick={() => mutate()}>重试</MainButton>
-  //   </Center>
-  // );
-  // const loadMore = async () => {
-  //   const data = await defaultHttpClient.get<PagedResources<Shop>>('/shop', {
-  //     params: {pageNum: 2, pageSize: 10},
-  //     autoHandlerError: true
-  //   });
-  //   mutate(data);
-  // };
   return (
     <>
       {isEmpty ? <>
@@ -119,30 +95,6 @@ export const Wrapper: React.FC = () => {
           </Stretch>
         </Padding>
       </>}
-
-      {/*{error ? fail :*/}
-      {/*  !data ? <Center>加载中...</Center> :*/}
-      {/*    shops ? <>*/}
-      {/*        <ListPanel>*/}
-      {/*          <ol>{*/}
-      {/*            shops.map(shop => {*/}
-      {/*              return <li key={shop.id}>*/}
-      {/*                <Link to={`/shops/${shop.id}`}>*/}
-      {/*                  <Img src={shop.imgUrl} fallbackSrc={westore}/>*/}
-      {/*                  <span className="name oneLine">{shop.name}</span>*/}
-      {/*                  <Icon name="right"/>*/}
-      {/*                </Link>*/}
-      {/*              </li>;*/}
-      {/*            })*/}
-      {/*          }</ol>*/}
-      {/*          <Center>*/}
-      {/*            <Space/>*/}
-      {/*            <MainButton onClick={loadMore}>加载更多</MainButton>*/}
-      {/*          </Center>*/}
-      {/*        </ListPanel>*/}
-      {/*      </> :*/}
-
-      {/*}*/}
     </>
   );
 };
