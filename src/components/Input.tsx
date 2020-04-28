@@ -14,7 +14,7 @@ const StyledInput = styled.input`
   padding: 0 8px;
 `;
 
-interface Props extends React.InputHTMLAttributes<InnerHTML> {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 }
 

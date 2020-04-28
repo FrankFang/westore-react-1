@@ -6,9 +6,8 @@ export const Form = styled.form`
 export const FormRow = styled.div`
   margin: 8px 0;
   display:flex;
-  > * + * {
-    margin-left: 8px; 
-  }
+  > * + * { margin-left: 8px; }
+  &:empty{ display:block; }
 `;
 
 

@@ -5,16 +5,16 @@ import {SWRConfig} from 'swr';
 import Icon from '../components/Icon';
 import vars from '_vars.scss';
 import {Wrapper} from './MyShops.Wrapper';
+import {Link} from 'react-router-dom';
 
 
-
-
-const MyShops: React.FC = () => {
-  const createShop = () => {};
+const Shops: React.FC = () => {
   return (
     <SWRConfig value={{shouldRetryOnError: false}}>
       <Layout title="我的店铺" action={
-        <Icon name="add" fill={vars.colorMain} onClick={createShop}/>
+        <Link to="/admin/shops/new">
+          <Icon name="add" fill={vars.colorMain}/>
+        </Link>
       }>
         <Suspense fallback={<Loading/>}>
           <Wrapper/>
@@ -24,4 +24,4 @@ const MyShops: React.FC = () => {
   );
 };
 
-export {MyShops};
+export {Shops};

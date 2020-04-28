@@ -13,7 +13,7 @@ import {Space} from '../components/Space';
 
 export const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({tel: '', code: ''});
-  type Errors = { [K in keyof typeof formData]?: string[] } | null
+  type Errors = ErrorsFor<typeof formData>
   const [errors, setErrors] = useState<Errors>(null);
   const onSubmit: React.FormEventHandler = async (e) => {
     e.preventDefault();

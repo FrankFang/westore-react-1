@@ -1,21 +1,25 @@
 import React from 'react';
 import {Router, Switch, Route, Redirect} from 'react-router-dom';
-import {MyShops} from './views/MyShops';
+import {Shops} from './views/Shops';
 import {history} from 'lib/history';
 import {SignIn} from './views/SignIn';
+import {ShopsNew} from './views/ShopsNew';
 
 
 function App() {
   return (
     <Router history={history}>
       <Switch>
-        <Route path="/my_shops">
-          <MyShops/>
+        <Route exact path="/admin/shops">
+          <Shops/>
         </Route>
-        <Route path="/sign_in">
+        <Route exact path="/admin/shops/new">
+          <ShopsNew/>
+        </Route>
+        <Route exact path="/sign_in">
           <SignIn/>
         </Route>
-        <Redirect exact from="/" to="/my_shops"/>
+        <Redirect exact from="/" to="/admin/shops"/>
         <Route path="*">
         </Route>
       </Switch>

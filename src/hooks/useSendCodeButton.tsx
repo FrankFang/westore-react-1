@@ -12,7 +12,6 @@ const useSendCodeButton = (sendCode: React.MouseEventHandler<HTMLButtonElement>)
       setCountDown(10);
       timer.current = setInterval(() => {
         setCountDown(x => x - 1);
-        console.log('hi');
       }, 1000);
       return () => {
         window.clearInterval(timer.current!);

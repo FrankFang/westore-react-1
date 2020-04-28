@@ -10,14 +10,15 @@ const UnstyledButton: React.FC<Props> = (props) => {
     onClick: outerOnClick, disabled: outerDisabled,
     children, autoDisable, autoDisableDuration, ...rest
   } = props;
+  const timers = useRef<[number | null, number | null]>([null, null]);
   const needCancelDisable = useRef<boolean>(false);
   const onClick: typeof outerOnClick = (e) => {
     if (autoDisable) {
       needCancelDisable.current = true;
-      setTimeout(() => {
+      timers.current[0] = setTimeout(() => {
         setDisabled(true);
       }, 0);
-      setTimeout(() => {
+      timers.current[1] = setTimeout(() => {
         if (needCancelDisable.current) {
           setDisabled(false);
           needCancelDisable.current = false;
@@ -32,6 +33,14 @@ const UnstyledButton: React.FC<Props> = (props) => {
     setDisabled(!!outerDisabled);
     needCancelDisable.current = false;
   }, [outerDisabled]);
+  useEffect(() => {
+    const timersRef = timers.current;
+    return () => {
+      timersRef.forEach(id => {
+        id && window.clearTimeout(id);
+      });
+    };
+  }, []);
 
   return (
     <button ref={buttonRef} {...rest} onClick={onClick} disabled={disabled}>{children}</button>

@@ -63,7 +63,7 @@ class HttpClient {
 }
 
 const defaultHttpClient = new HttpClient(
-  'http://localhost:8080/api/v1/',
+  'http://localhost:8010/api/v1/',
   // ' https://www.easy-mock.com/mock/5ea4c9f817ddcd6a5d7c5db7/api/v1/',
   (error) => {
     if (error.isAxiosError) {
