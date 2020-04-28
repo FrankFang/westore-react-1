@@ -13,6 +13,7 @@ import {AxiosResponse} from 'axios';
 import {Loading} from '../components/Loading';
 import {Stretch} from '../components/Stretch';
 import styled from 'styled-components';
+import {history} from '../lib/history';
 
 interface PagedResources<T> {
   pageNum: number;
@@ -73,10 +74,8 @@ export const Wrapper: React.FC = () => {
   );
   return isEmpty ?
     <Center>
-      <Space/>
-      尚未创建店铺
-      <Space/>
-      <MainButton>创建新的店铺</MainButton>
+      <Space/>尚未创建店铺<Space/>
+      <MainButton onClick={() => history.push(`/admin/shops/new`)}>创建新的店铺</MainButton>
       <Space/>
     </Center>
     :
