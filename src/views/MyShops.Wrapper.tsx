@@ -71,30 +71,27 @@ export const Wrapper: React.FC = () => {
     },
     []
   );
-  return (
+  return isEmpty ?
+    <Center>
+      <Space/>
+      尚未创建店铺
+      <Space/>
+      <MainButton>创建新的店铺</MainButton>
+      <Space/>
+    </Center>
+    :
     <>
-      {isEmpty ? <>
-        <Center>
-          <Space/>
-          尚未创建店铺
-          <Space/>
-          <MainButton>创建新的店铺</MainButton>
-          <Space/>
-        </Center>
-      </> : <>
-        <List>
-          {pages}
-        </List>
-        <Padding>
-          <Stretch>
-            {isReachingEnd ?
-              <Center>没有更多了</Center> :
-              isLoadingMore ? null :
-                <MainButton onClick={() => loadMore()}>加载更多</MainButton>
-            }
-          </Stretch>
-        </Padding>
-      </>}
-    </>
-  );
+      <List>
+        {pages}
+      </List>
+      <Padding>
+        <Stretch>
+          {isReachingEnd ?
+            <Center>没有更多了</Center> :
+            isLoadingMore ? null :
+              <MainButton onClick={() => loadMore()}>加载更多</MainButton>
+          }
+        </Stretch>
+      </Padding>
+    </>;
 };
