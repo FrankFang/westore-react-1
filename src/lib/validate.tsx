@@ -1,4 +1,4 @@
-type RuleForValue = { message?: string } & (
+export type RuleForValue = { message?: string } & (
   | { required: boolean }
   | { format: FormatOptions }
   | { length: LengthOptions }
@@ -8,7 +8,7 @@ type FormatOptions = 'china phone' | 'email' | 'number' | 'float' | RegExp
 type LengthOptions = (number | undefined)[]
 
 
-type RulesForFormData<T> = {
+export type RulesForFormData<T> = {
   [K in keyof T]?: (RuleForValue)[]
 }
 
@@ -35,14 +35,14 @@ const translation = {
   length: '长度不符合要求'
 };
 
-const required: Validator = ({params, message, value, key, formData, callback}) => {
+const required: Validator = ({message, value, callback}) => {
   if (value === undefined || value === null || value === '') {
     callback(message ?? translation['required']);
   } else {
     callback();
   }
 };
-const length: Validator = ({params, message, value, key, formData, callback}) => {
+const length: Validator = ({params, message, value, callback}) => {
   const string = value.toString();
   let [min, max] = params;
   min = min ?? -Infinity;
@@ -54,7 +54,7 @@ const length: Validator = ({params, message, value, key, formData, callback}) =>
   }
 };
 
-const format: Validator = ({params, message, value, key, formData, callback}) => {
+const format: Validator = ({params, message, value, callback}) => {
   const string = value.toString();
   const pattern = params instanceof RegExp ? params :
     params === 'china phone' ? /1[\d]{10}/ :
@@ -89,7 +89,7 @@ const validate = <T extends FormData>(formData: T, rules: RulesForFormData<T>) =
       const message = rule.message;
       delete rule.message;
       const [ruleName, params] = Object.entries(rule)[0];
-      return new Promise<[keyof T, string | undefined]>((resolve, reject) => {
+      return new Promise<[keyof T, string | undefined]>((resolve) => {
         if (isBuiltinRuleName(ruleName)) {
           builtinValidators[ruleName]({
             params, key, formData, message,

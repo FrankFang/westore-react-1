@@ -5,8 +5,12 @@ $border-radius: 4px;
 $color-main: #2452ff;
 $color-dander: red;
 $color-border: #ccc;
+$color-text: #333;
+$color-text-2: #666;
+$color-text-3: #999;
 
 $height-header: 56px;
+$height-tab: 56px;
 $height-item: 56px;
 
 :export {
@@ -15,6 +19,10 @@ $height-item: 56px;
   colorMain: $color-main;
   colorDanger: $color-dander;
   colorBorder: $color-border;
+  colorText: $color-text;
+  colorText2: $color-text-2;
+  colorText3: $color-text-3;
   heightHeader: $height-header;
   heightItem: $height-item;
+  heightTab: $height-tab;
 }

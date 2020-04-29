@@ -4,7 +4,7 @@ import {defaultHttpClient} from '../lib/HttpClient';
 import {Center} from '../components/Center';
 import {Space} from '../components/Space';
 import {MainButton} from '../components/button/MainButton';
-import {Item} from './MyShops.styled';
+import {Item} from './Shops.styled';
 import {Link} from 'react-router-dom';
 import {Img} from '../components/Img';
 import westore from '../images/westore.svg';
@@ -15,22 +15,6 @@ import {Stretch} from '../components/Stretch';
 import styled from 'styled-components';
 import {history} from '../lib/history';
 
-interface PagedResources<T> {
-  pageNum: number;
-  pageSize: number;
-  totalPage: number;
-  data: T[];
-}
-
-interface Shop {
-  id: number;
-  name: string;
-  description: string;
-  imgUrl: string;
-  ownerUserId: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const List = styled.div`
   background: white;

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import {MainButton} from '../components/button/MainButton';
 import {Stretch} from '../components/Stretch';
 import {Space} from '../components/Space';
-import useSWR from 'swr';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {Loading} from '../components/Loading';
 import {validate} from '../lib/validate';
@@ -19,7 +18,7 @@ const MyForm = styled(Form)`
   padding: 16px;
 `;
 
-export const ShopsNew: React.FC = () => {
+export const ShopNew: React.FC = () => {
   const [shop, setShop] = useState({
     name: '',
     description: '',

@@ -7,6 +7,7 @@ import {history} from '../lib/history';
 const Wrapper = styled.div`
   font-size: 24px;
   display:flex;
+  flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;

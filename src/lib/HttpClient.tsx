@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, AxiosInstance, AxiosError} from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
 import {showAlert} from 'components/Dialog';
 import {history, pathnameBeforeSignIn} from './history';
 
@@ -12,7 +12,7 @@ class HttpClient {
 
   constructor(
     public baseUrl: string,
-    public handleError?: (error: any) => Promise<any>
+    public handleError?: (error: any) => Promise<never>
   ) {
     this.client = axios.create({
       baseURL: baseUrl, // 注意大小写
@@ -20,10 +20,10 @@ class HttpClient {
       headers: {},
       withCredentials: true,
     });
-    this.testMock()
+    this.testMock();
   }
 
-  testMock(){
+  testMock() {
 
   }
 
@@ -34,15 +34,14 @@ class HttpClient {
         method === 'post' ? this.client.post<T>(url!, data, config) :
           method === 'patch' ? this.client.patch<T>(url!, data, config) :
             method === 'delete' ? this.client.patch<T>(url!, config) : undefined as never;
-    const x: typeof promise = promise.then(null, (error) => {
+    return promise.then(null, (error) => {
       if ((typeof autoHandlerError === 'function' ? autoHandlerError(error) : autoHandlerError)
         && this.handleError) {
         return this.handleError(error);
       } else {
-        Promise.reject(error);
+        return Promise.reject(error);
       }
     });
-    return x;
   }
 
   get<T>(url: string, options?: RequestConfig) {

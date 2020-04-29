@@ -3,6 +3,7 @@ import vars from '_vars.scss';
 import {UnstyledButton} from './UnstyledButton';
 
 const MainButton = styled(UnstyledButton)`
+  white-space: nowrap;
   height: 40px;
   border: none;
   padding: 0 16px;
