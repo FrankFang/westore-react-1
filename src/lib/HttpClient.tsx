@@ -33,7 +33,7 @@ class HttpClient {
       method === 'get' ? this.client.get<T>(url!, config) :
         method === 'post' ? this.client.post<T>(url!, data, config) :
           method === 'patch' ? this.client.patch<T>(url!, data, config) :
-            method === 'delete' ? this.client.patch<T>(url!, config) : undefined as never;
+            method === 'delete' ? this.client.delete<T>(url!, config) : undefined as never;
     return promise.then(null, (error) => {
       if ((typeof autoHandlerError === 'function' ? autoHandlerError(error) : autoHandlerError)
         && this.handleError) {
@@ -56,7 +56,7 @@ class HttpClient {
     return this.ajax<T>({...options, url, data, method: 'patch'});
   }
 
-  delete<T>(url: string, options: RequestConfig) {
+  delete<T>(url: string, options?: RequestConfig) {
     return this.ajax<T>({...options, url, method: 'delete'});
   }
 }

@@ -20,21 +20,21 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   'value' | 'onChange' | 'defaultValue'> {
 }
 
-type Props<FormData = any> = (
-  | { data: FormData; onChange: (data: FormData) => void; }
-  | { defaultData: FormData; })
+type Props<T = any> = (
+  | { data: T; onChange: (data: T) => void; }
+  | { defaultData: T; })
   & {
   title?: string;
-  fields: { key: keyof FormData; input: InputProps; rules?: RuleForValue[] }[];
-  onSubmit?: (data: FormData) => void;
+  fields: { key: keyof T; input: InputProps; rules?: RuleForValue[] }[];
+  onSubmit?: (data: T) => void;
 }
 
-export function F<FormData extends { [K: string]: any }>(props: PropsWithChildren<Props<FormData>>) {
-  const [_data, _setData] = useState<FormData | null>('defaultData' in props ? props.defaultData : null);
+export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props<T>>) {
+  const [_data, _setData] = useState<T | null>('defaultData' in props ? props.defaultData : null);
   const getData = () => 'defaultData' in props ? _data : props.data;
-  const patchData = (key: keyof FormData, v: string) => {
+  const patchData = (key: keyof T, v: string) => {
     const fn = 'defaultData' in props ? _setData : props.onChange;
-    const value = {...getData(), [key]: v} as FormData;
+    const value = {...getData(), [key]: v} as T;
     fn(value);
   };
 
