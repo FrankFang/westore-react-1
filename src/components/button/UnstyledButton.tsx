@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {forwardRef, useEffect, useRef, useState} from 'react';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   autoDisable?: boolean;
   autoDisableDuration?: number;
 }
 
-const UnstyledButton: React.FC<Props> = (props) => {
+const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     onClick: outerOnClick, disabled: outerDisabled,
     children, autoDisable, autoDisableDuration, ...rest
@@ -28,7 +28,6 @@ const UnstyledButton: React.FC<Props> = (props) => {
     outerOnClick?.(e);
   };
   const [disabled, setDisabled] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     setDisabled(!!outerDisabled);
     needCancelDisable.current = false;
@@ -43,13 +42,14 @@ const UnstyledButton: React.FC<Props> = (props) => {
   }, []);
 
   return (
-    <button ref={buttonRef} {...rest} onClick={onClick} disabled={disabled}>{children}</button>
+    <button ref={ref} {...rest} onClick={onClick} disabled={disabled}>{children}</button>
   );
-};
+});
 UnstyledButton.defaultProps = {
   autoDisable: true,
   autoDisableDuration: 1000,
   type: 'button'
 };
+
 
 export {UnstyledButton};

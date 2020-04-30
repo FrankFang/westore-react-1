@@ -12,21 +12,11 @@ import {showAlert} from '../components/Dialog';
 import styled from 'styled-components';
 import {DangerButton} from '../components/button/DangerButton';
 import {history} from '../lib/history';
+import {useShop} from '../hooks/useShop';
+import {Panel} from '../components/Panel';
 
-const Panel = styled.div`
-  padding: 16px;
-  margin: 16px 0;
-  background: white;
-  > h1 {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-`;
 const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
-  const {data: shop, mutate} = useSWR(`/shop/${props.match.params.id}`, async (key) => {
-    const response = await defaultHttpClient.get<Resource<Shop>>(key, {autoHandlerError: true});
-    return response.data.data;
-  });
+  const {shop, mutate} = useShop(props.match.params.id);
   if (!shop) {return <Loading/>;}
 
   const updateShop = async (data: typeof shop) => {

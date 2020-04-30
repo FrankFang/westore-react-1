@@ -70,7 +70,7 @@ interface Props extends RouteComponentProps<{ id: string }> {
 const _Shop: React.FC<Props> = ({shop, children}) => {
   return (
     <Layout title={shop?.name ?? '店铺详情'} action={
-      shop && <Link to={`admin/shops/${shop.id}/goods/new`}>
+      shop && <Link to={`/admin/shops/${shop.id}/goods/new`}>
         <Icon name="add"/>
       </Link>
     }>
@@ -90,12 +90,12 @@ const _Shop: React.FC<Props> = ({shop, children}) => {
         shop &&
         <Tabs>
           <li>
-            <NavLink exact to={`/shops/${shop.id}`} activeClassName="active">
+            <NavLink exact to={`/admin/shops/${shop.id}`} activeClassName="active">
               商品
             </NavLink>
           </li>
           <li>
-            <NavLink exact to={`/shops/${shop.id}/edit`} activeClassName="active">
+            <NavLink exact to={`/admin/shops/${shop.id}/edit`} activeClassName="active">
               设置
             </NavLink>
           </li>

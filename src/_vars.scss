@@ -8,6 +8,7 @@ $color-border: #ccc;
 $color-text: #333;
 $color-text-2: #666;
 $color-text-3: #999;
+$color-shadow: fade_out(black, 0.75);
 
 $height-header: 56px;
 $height-tab: 56px;
@@ -22,6 +23,7 @@ $height-item: 56px;
   colorText: $color-text;
   colorText2: $color-text-2;
   colorText3: $color-text-3;
+  colorShadow: $color-shadow;
   heightHeader: $height-header;
   heightItem: $height-item;
   heightTab: $height-tab;

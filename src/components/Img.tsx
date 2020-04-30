@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import westore from 'images/westore.svg';
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
@@ -19,5 +20,6 @@ export const Img: React.FC<Props> = (props) => {
 };
 
 Img.defaultProps = {
-  alt: '[图片]'
+  alt: '[图片]',
+  fallbackSrc: westore,
 };

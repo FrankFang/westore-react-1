@@ -17,4 +17,8 @@ const Icon: React.FC<Props> = (props) => {
   );
 };
 
+Icon.defaultProps = {
+  fill: 'currentColor'
+};
+
 export default Icon;

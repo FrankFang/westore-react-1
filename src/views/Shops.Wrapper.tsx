@@ -41,7 +41,7 @@ export const Wrapper: React.FC = () => {
 
       return response.data.data.map(shop => (
         <Item key={shop.id}>
-          <Link to={`/shops/${shop.id}`}>
+          <Link to={`/admin/shops/${shop.id}`}>
             <Img src={shop.imgUrl} fallbackSrc={westore}/>
             <span className="name oneLine">{shop.name}</span>
             <Icon name="right"/>

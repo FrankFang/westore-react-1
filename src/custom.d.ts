@@ -22,3 +22,16 @@ interface PagedResources<T> {
 interface Resource<T> {
   data: T
 }
+
+interface Good {
+  id: number;
+  name: string;
+  description: string;
+  details?: string;
+  imgUrl: string;
+  price: number;
+  stock: number;
+  shopId: number;
+  createdAt: string;
+  updatedAt: string;
+}
