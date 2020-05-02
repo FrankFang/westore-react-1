@@ -1,23 +1,30 @@
 import React from 'react';
+import styled from 'styled-components';
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   children: string | number;
 }
+
+const Unit = styled.span`
+  font-size: 0.8em;
+`;
 
 const toHuman = (number: number) => {
   if (Number.isNaN(number)) {
     return '无效';
   } else {
-    return '￥' + (number / 100).toFixed(2).replace(/\.00$/g, '');
+    return <><Unit>￥</Unit>{(number / 100).toFixed(2)
+      .replace(/\.00$/g, '')}</>;
   }
 };
 export const Money: React.FC<Props> = (props) => {
-  const number = parseInt(props.children.toString());
+  const {children, ...rest} = props;
+  const number = parseInt(children.toString());
   if (Number.isNaN(number)) {
-    console?.error?.(`${props.children} is not a number`);
+    console?.error?.(`${children} is not a number`);
   }
   return (
-    <span>{toHuman(number)}</span>
+    <span {...rest}>{toHuman(number)}</span>
   );
 };
 

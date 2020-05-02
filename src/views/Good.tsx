@@ -65,7 +65,7 @@ const _Good: React.FC<RouteComponentProps<{ shopId: string, id: string }>> = (pr
         :
         <Loading/>
       }
-      <CartBar goodId={id} element={cover}/>
+      <CartBar goodId={id} element={cover} shopId={shopId}/>
     </Layout>
 
   );

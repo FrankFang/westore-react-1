@@ -1,9 +1,13 @@
 import {MainButton} from './button/MainButton';
 import {MinorButton} from './button/MinorButton';
 import Icon from './Icon';
-import React, {ElementRef, MutableRefObject, ReactNode, Ref, useRef} from 'react';
+import React, {ElementRef, MutableRefObject, ReactNode, Ref, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import vars from '_vars.scss';
+import useSWR from 'swr';
+import {defaultHttpClient} from '../lib/HttpClient';
+import {Link} from 'react-router-dom';
+import {useCart} from '../hooks/useCart';
 
 const Wrapper = styled.div`
   position:fixed; bottom: 0; left: 0; width: 100%; padding: 8px 16px;
@@ -15,17 +19,22 @@ const Wrapper = styled.div`
   > button:nth-child(2){
     flex-grow: 0;
   }
-  > button + button{
+  > * + *{
     margin-left: 8px;
   }
 `;
 
 interface Props {
   goodId: number | string;
+  shopId: number | string;
+  number?: number;
   element?: MutableRefObject<HTMLElement | null>;
 }
 
-const addToCart = (from: HTMLElement, to: HTMLElement) => {
+const addToCart = async (
+  goods: { id: number | string, number: number }[], from: HTMLElement, to: HTMLElement,
+  callback?: () => void) => {
+  await defaultHttpClient.post(`/shoppingCart`, {goods}, {autoHandlerError: true});
   const {left, top, width, height} = from.getBoundingClientRect();
   const clone = from.cloneNode(true) as HTMLElement;
   Object.assign(clone.style, {
@@ -43,6 +52,7 @@ const addToCart = (from: HTMLElement, to: HTMLElement) => {
     transform: `translate(${deltaX}px, ${deltaY}px) scale(${ratio})`,
   });
   const after = () => {
+    callback?.();
     clone.removeEventListener('transitionend', after);
     clone.remove();
   };
@@ -50,13 +60,29 @@ const addToCart = (from: HTMLElement, to: HTMLElement) => {
 };
 export const CartBar: React.FC<Props> = (props) => {
   const button = useRef<HTMLButtonElement>(null);
+  const {cart, error} = useCart();
+
+  const [count, setCount] = useState<number | undefined>(0);
+  useEffect(() => {
+    setCount(cart?.length || undefined);
+  }, [cart?.length]);
+  const onClick = () => {
+    addToCart([{id: props.goodId, number: props.number!}],
+      props.element!.current!, button.current!, () => {
+        setCount(x => (x ?? 0) + 1);
+      });
+  };
   return (
     <Wrapper>
-      <MainButton onClick={() => addToCart(props.element!.current!, button.current!)}>加入购物车</MainButton>
-      <MinorButton ref={button}><Icon name="cart"/></MinorButton>
+      <MainButton onClick={onClick}>加入购物车</MainButton>
+      <Link to="/cart">
+        <MinorButton ref={button} badge={count?.toString()}><Icon name="cart"/></MinorButton>
+      </Link>
     </Wrapper>
   );
 };
-
+CartBar.defaultProps = {
+  number: 1
+};
 
 

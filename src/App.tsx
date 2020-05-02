@@ -9,6 +9,7 @@ import {ShopEdit} from './views/ShopEdit';
 import {GoodNew} from './views/GoodNew';
 import {Good} from './views/Good';
 import {GoodEdit} from './views/GoodEdit';
+import {Cart} from './views/Cart';
 
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route exact path="/sign_in">
           <SignIn/>
+        </Route>
+        <Route exact path="/cart">
+          <Cart/>
         </Route>
         <Redirect exact from="/" to="/admin/shops"/>
         <Route path="*">

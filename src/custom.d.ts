@@ -23,6 +23,11 @@ interface Resource<T> {
   data: T
 }
 
+interface Cart {
+  shop: Shop;
+  goods: (Good & { number: number })[];
+}
+
 interface Good {
   id: number;
   name: string;

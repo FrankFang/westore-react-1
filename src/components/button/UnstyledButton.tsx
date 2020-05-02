@@ -3,12 +3,13 @@ import React, {forwardRef, useEffect, useRef, useState} from 'react';
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   autoDisable?: boolean;
   autoDisableDuration?: number;
+  badge?: string;
 }
 
 const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     onClick: outerOnClick, disabled: outerDisabled,
-    children, autoDisable, autoDisableDuration, ...rest
+    badge, children, autoDisable, autoDisableDuration, ...rest
   } = props;
   const timers = useRef<[number | null, number | null]>([null, null]);
   const needCancelDisable = useRef<boolean>(false);
@@ -42,7 +43,10 @@ const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   }, []);
 
   return (
-    <button ref={ref} {...rest} onClick={onClick} disabled={disabled}>{children}</button>
+    <button ref={ref} {...rest} onClick={onClick} disabled={disabled}>
+      {children}
+      {badge && <span className="badge">{badge}</span>}
+    </button>
   );
 });
 UnstyledButton.defaultProps = {

@@ -16,6 +16,7 @@ import {MainButton} from '../components/button/MainButton';
 import {history} from '../lib/history';
 import {Center} from '../components/Center';
 import {Padding} from '../components/Padding';
+import {Name} from '../components/Name';
 
 
 const List = styled.div`
@@ -27,16 +28,7 @@ const List = styled.div`
 const Item = styled(Link)`
   display:block; width: calc(50% - 8px); background:white; margin-bottom: 16px;
   border-radius: ${vars.borderRadius}; overflow: hidden;
-  h3{
-    font-size: 18px;
-    line-height: 24px;
-    height: 48px;
-    overflow: hidden;
-    display: -webkit-box;   
-    -webkit-line-clamp: 3;   
-    -webkit-box-orient: vertical;     
-    padding: 0 8px;
-  }
+  h3{padding: 0 8px;}
   p{ padding: 0 8px 8px; font-size: 18px; color: ${vars.colorDanger}; }
 `;
 const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
@@ -65,7 +57,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
           <ShapedDiv>
             <Img src={good.imgUrl} alt=""/>
           </ShapedDiv>
-          <h3>{good.name}</h3>
+          <Name>{good.name}</Name>
           <p><Money>{good.price}</Money></p>
         </Item>
       ));
