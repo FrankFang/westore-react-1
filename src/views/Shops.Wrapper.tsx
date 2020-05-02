@@ -14,14 +14,13 @@ import {Loading} from '../components/Loading';
 import {Stretch} from '../components/Stretch';
 import styled from 'styled-components';
 import {history} from '../lib/history';
+import {Padding} from '../components/Padding';
 
 
 const List = styled.div`
   background: white;
 `;
-const Padding = styled.div`
-  padding: 16px;
-`;
+
 
 export const Wrapper: React.FC = () => {
   const {

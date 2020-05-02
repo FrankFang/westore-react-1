@@ -9,6 +9,13 @@ import {Stretch} from '../components/Stretch';
 import styled from 'styled-components';
 import {ShapedDiv} from '../components/ShapedDiv';
 import {Img} from '../components/Img';
+import {Money} from '../components/Money';
+import vars from '_vars.scss';
+import {Space} from '../components/Space';
+import {MainButton} from '../components/button/MainButton';
+import {history} from '../lib/history';
+import {Center} from '../components/Center';
+import {Padding} from '../components/Padding';
 
 
 const List = styled.div`
@@ -18,10 +25,8 @@ const List = styled.div`
   flex-wrap: wrap;
 `;
 const Item = styled(Link)`
-  display:block;
-  width: calc(50% - 8px); 
-  background:white;
-  margin-bottom: 16px;
+  display:block; width: calc(50% - 8px); background:white; margin-bottom: 16px;
+  border-radius: ${vars.borderRadius}; overflow: hidden;
   h3{
     font-size: 18px;
     line-height: 24px;
@@ -30,7 +35,9 @@ const Item = styled(Link)`
     display: -webkit-box;   
     -webkit-line-clamp: 3;   
     -webkit-box-orient: vertical;     
+    padding: 0 8px;
   }
+  p{ padding: 0 8px 8px; font-size: 18px; color: ${vars.colorDanger}; }
 `;
 const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const shopId = props.match.params.id;
@@ -59,6 +66,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
             <Img src={good.imgUrl} alt=""/>
           </ShapedDiv>
           <h3>{good.name}</h3>
+          <p><Money>{good.price}</Money></p>
         </Item>
       ));
     },
@@ -71,9 +79,28 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   );
   return (
     <Wrapper shop={shop}>
-      <List>
-        {pages}
-      </List>
+      {isEmpty ?
+        <Center>
+          <Space/>尚未创建商品<Space/>
+          <MainButton onClick={() => history.push(`/admin/shops/${shopId}/goods/new`)}>创建新的商品</MainButton>
+          <Space/>
+        </Center>
+        :
+        <>
+          <List>
+            {pages}
+          </List>
+          <Padding>
+            <Stretch>
+              {isReachingEnd ?
+                <Center>没有更多了</Center> :
+                isLoadingMore ? null :
+                  <MainButton onClick={() => loadMore()}>加载更多</MainButton>
+              }
+            </Stretch>
+          </Padding>
+        </>
+      }
     </Wrapper>
   );
 };
