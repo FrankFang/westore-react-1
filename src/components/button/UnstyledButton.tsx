@@ -1,15 +1,17 @@
 import React, {forwardRef, useEffect, useRef, useState} from 'react';
+import cs from 'classnames';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   autoDisable?: boolean;
   autoDisableDuration?: number;
   badge?: string;
+  size?: 'default' | 'small' | 'big';
 }
 
 const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const {
     onClick: outerOnClick, disabled: outerDisabled,
-    badge, children, autoDisable, autoDisableDuration, ...rest
+    badge, className, children, size, autoDisable, autoDisableDuration, ...rest
   } = props;
   const timers = useRef<[number | null, number | null]>([null, null]);
   const needCancelDisable = useRef<boolean>(false);
@@ -43,7 +45,8 @@ const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   }, []);
 
   return (
-    <button ref={ref} {...rest} onClick={onClick} disabled={disabled}>
+    <button ref={ref} {...rest} onClick={onClick} disabled={disabled}
+      className={cs(className, {[`size-${size}`]: true})}>
       {children}
       {badge && <span className="badge">{badge}</span>}
     </button>
@@ -52,7 +55,8 @@ const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
 UnstyledButton.defaultProps = {
   autoDisable: true,
   autoDisableDuration: 1000,
-  type: 'button'
+  type: 'button',
+  size: 'default'
 };
 
 

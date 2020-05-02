@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   background:white;
   border-bottom: 1px solid ${vars.colorBorder};
   height: ${vars.heightHeader};
+  position:relative;
 `;
 
 export interface TopbarProps {
@@ -24,18 +25,28 @@ export interface TopbarProps {
 const Placeholder = styled.div`
   width: 24px;
   height: 24px;
+  text-align:right;
 `;
 const goBack = () => {
   history.goBack();
 };
+const Action = styled.div`
+  position:absolute;
+  right:16px; 
+  top: 50%;
+  display:flex;
+  align-items: center;
+  transform: translateY(-50%);
+`;
 const Topbar: React.FC<TopbarProps> = (props) => {
   return (
     <Wrapper>
       <Icon name="left" onClick={goBack}/>
       <span>{props.title}</span>
-      <Placeholder>
+      <Placeholder/>
+      <Action>
         {props.action}
-      </Placeholder>
+      </Action>
     </Wrapper>
   );
 };

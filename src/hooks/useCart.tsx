@@ -2,12 +2,17 @@ import useSWR from 'swr';
 import {defaultHttpClient} from '../lib/HttpClient';
 
 export const useCart = () => {
-  const {data: cart, error: error} = useSWR('/shoppingCart', async (url) => {
+  const {data: cart, error, mutate} = useSWR('/shoppingCart', async (url) => {
     return (await defaultHttpClient.get<PagedResources<Cart>>(url, {
       params: {pageSize: 100, pageNum: 1},
       autoHandlerError: true
     })).data.data;
   });
+  const updateShopCart = (shopId: number, shop: Shop, goods: (Good & { number: number })[]) => {
+    if (!cart) {return;}
+    const index = cart.findIndex(({shop}) => shop.id === shopId);
+    mutate([...cart.slice(0, index), {shop, goods}, ...cart.slice(index)]);
+  };
   //FIXME: 删除假数据
   if (cart?.length === 0) {
     cart.push({
@@ -62,6 +67,6 @@ export const useCart = () => {
     });
   }
   return {
-    cart, error
+    cart, error, updateShopCart
   };
 };
