@@ -46,12 +46,6 @@ export const CartBar: React.FC<Props> = (props) => {
         return false;
       }
     });
-    console.log('found');
-    console.log(found);
-    console.log('cart');
-    console.log(cart);
-    console.log('shopId, goodId');
-    console.log(shopId, goodId);
     await defaultHttpClient.post(`/shoppingCart`, {goods: [{id: goodId, number: 1}]}, {autoHandlerError: true});
     const {left, top, width, height} = from.getBoundingClientRect();
     const clone = from.cloneNode(true) as HTMLElement;

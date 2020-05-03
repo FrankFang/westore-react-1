@@ -26,7 +26,6 @@ const List = styled.div`
 
 
 export const Wrapper: React.FC = () => {
-  console.log('wrapper');
   const {
     pages, loadMore, isReachingEnd, isEmpty, isLoadingMore, pageCount, pageSWRs
   } = useSWRPages<number | null, PagedResources<Shop>>(
@@ -34,7 +33,6 @@ export const Wrapper: React.FC = () => {
     ({offset, withSWR}) => {
       offset = offset || 0;
       const {data: response} = withSWR(swr(['/shop', offset + 1, 10], async (url, pageNum, pageSize) => {
-        console.log('ajax');
         return (await defaultHttpClient.get<PagedResources<Shop>>(url, {
           params: {pageNum, pageSize},
           autoHandlerError: true
@@ -58,10 +56,6 @@ export const Wrapper: React.FC = () => {
     },
     []
   );
-  console.log('pageCount');
-  console.log(pageCount);
-  console.log('isEmpty, isReachingEnd, isLoadingMore');
-  console.log(isEmpty, isReachingEnd, isLoadingMore);
   return <>
     <List>
       {pages}
