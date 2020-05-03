@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import vars from '_vars.scss';
 
 const Label = styled.label`
   display:inline-flex;
@@ -13,15 +14,27 @@ const StyledInput = styled.input`
   flex-grow: 1;
   padding: 0 8px;
 `;
+const Span = styled.span`
+  line-height: 40px;
+  padding: 0 8px;
+  background: #eeeeee;
+  border-top-left-radius: ${vars.borderRadius};
+  border-bottom-left-radius: ${vars.borderRadius};
+  + input{
+    border-top-left-radius:0;
+    border-bottom-left-radius:0;
+  }
+`;
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-
+  label?: string;
 }
 
 const Input: React.FC<Props> = (props) => {
-  const {children, ...rest} = props;
+  const {children, label, ...rest} = props;
   return (
     <Label>
+      {label && <Span>{label}</Span>}
       <StyledInput type="text" {...rest}/>
     </Label>
   );

@@ -40,3 +40,11 @@ interface Good {
   createdAt: string;
   updatedAt: string;
 }
+
+interface User {
+  id: number;
+  name: string;
+  tel: string;
+  avatarUrl: string;
+  address: string;
+}

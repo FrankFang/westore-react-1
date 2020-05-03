@@ -10,6 +10,7 @@ import {GoodNew} from './views/GoodNew';
 import {Good} from './views/Good';
 import {GoodEdit} from './views/GoodEdit';
 import {Cart} from './views/Cart';
+import {Me} from './views/Me';
 
 
 function App() {
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route exact path="/cart">
           <Cart/>
+        </Route>
+        <Route exact path="/me">
+          <Me/>
         </Route>
         <Redirect exact from="/" to="/admin/shops"/>
         <Route path="*">
