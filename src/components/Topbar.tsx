@@ -19,7 +19,8 @@ const Wrapper = styled.div`
 
 export interface TopbarProps {
   title: string;
-  action?: React.ReactNode
+  action?: React.ReactNode;
+  hasBack?: boolean;
 }
 
 const Placeholder = styled.div`
@@ -41,7 +42,11 @@ const Action = styled.div`
 const Topbar: React.FC<TopbarProps> = (props) => {
   return (
     <Wrapper>
-      <Icon name="left" onClick={goBack}/>
+      {props.hasBack ?
+        <Icon name="left" onClick={goBack}/>
+        :
+        <Icon/>
+      }
       <span>{props.title}</span>
       <Placeholder/>
       <Action>
@@ -50,5 +55,8 @@ const Topbar: React.FC<TopbarProps> = (props) => {
     </Wrapper>
   );
 };
+Topbar.defaultProps = {
+  hasBack: true
+}
 
 export {Topbar};

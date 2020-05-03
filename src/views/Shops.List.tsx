@@ -9,7 +9,6 @@ import {Link} from 'react-router-dom';
 import {Img} from '../components/Img';
 import westore from '../images/westore.svg';
 import Icon from '../components/Icon';
-import {AxiosResponse} from 'axios';
 import {Loading} from '../components/Loading';
 import {Stretch} from '../components/Stretch';
 import styled from 'styled-components';
@@ -17,7 +16,7 @@ import {history} from '../lib/history';
 import {Padding} from '../components/Padding';
 
 
-const List = styled.div`
+const Wrapper = styled.div`
   background: white;
   &:empty{
     display:none;
@@ -25,7 +24,7 @@ const List = styled.div`
 `;
 
 
-export const Wrapper: React.FC = () => {
+export const List: React.FC = () => {
   const {
     pages, loadMore, isReachingEnd, isEmpty, isLoadingMore, pageCount, pageSWRs
   } = useSWRPages<number | null, PagedResources<Shop>>(
@@ -57,9 +56,9 @@ export const Wrapper: React.FC = () => {
     []
   );
   return <>
-    <List>
+    <Wrapper>
       {pages}
-    </List>
+    </Wrapper>
     {isEmpty ?
       <Center>
         <Space/>尚未创建店铺<Space/>

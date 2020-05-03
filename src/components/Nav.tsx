@@ -1,46 +1,47 @@
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import React from 'react';
 import Icon from './Icon';
+import vars from '_vars.scss';
 
 const NavWrapper = styled.nav`
   line-height: 24px;
   box-shadow: 0 0 3px rgba(0,0,0,0.25);
-  > ul {
-    display:flex;
-    > li{
+  background: white;
+  display:flex;
+    > a{
       width: 33.3333%;
       text-align:center;
       display: flex;
       flex-direction: column;
-      padding: 4px 0;
+      padding: 8px 0 4px;
       justify-content: center;
       align-items: center;
       .icon {
         width: 24px;      
         height: 24px;
       }
-    }
+      &.active{
+        color: ${vars.colorMain};
+      }
   }
 `;
 
 const Nav = () => {
   return (
     <NavWrapper>
-      <ul>
-        <li>
-          <Icon name="tag"/>
-          <Link to="/tags">标签页</Link>
-        </li>
-        <li>
-          <Icon name="money"/>
-          <Link to="/money">记账页</Link>
-        </li>
-        <li>
-          <Icon name="chart"/>
-          <Link to="/statistics">统计页</Link>
-        </li>
-      </ul>
+      <NavLink to="/admin/shops" exact activeClassName="active">
+        <Icon name="shop"/>
+        <span>店铺</span>
+      </NavLink>
+      <NavLink to="/admin/orders" exact activeClassName="active">
+        <Icon name="order"/>
+        <span>订单</span>
+      </NavLink>
+      <NavLink to="/me" exact activeClassName="active">
+        <Icon name="user"/>
+        <span>个人</span>
+      </NavLink>
     </NavWrapper>
   );
 };
