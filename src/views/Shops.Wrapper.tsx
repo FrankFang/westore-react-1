@@ -19,26 +19,31 @@ import {Padding} from '../components/Padding';
 
 const List = styled.div`
   background: white;
+  &:empty{
+    display:none;
+  }
 `;
 
 
 export const Wrapper: React.FC = () => {
+  console.log('wrapper');
   const {
-    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
-  } = useSWRPages<number | null, AxiosResponse<PagedResources<Shop>>>(
+    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore, pageCount, pageSWRs
+  } = useSWRPages<number | null, PagedResources<Shop>>(
     'shops',
     ({offset, withSWR}) => {
       offset = offset || 0;
-      const {data: response} = withSWR(swr(['/shop', offset + 1, 10], (url, pageNum, pageSize) => {
-        return defaultHttpClient.get<PagedResources<Shop>>(url, {
+      const {data: response} = withSWR(swr(['/shop', offset + 1, 10], async (url, pageNum, pageSize) => {
+        console.log('ajax');
+        return (await defaultHttpClient.get<PagedResources<Shop>>(url, {
           params: {pageNum, pageSize},
           autoHandlerError: true
-        });
+        })).data;
       }));
 
       if (!response) return <Stretch><Loading/></Stretch>;
 
-      return response.data.data.map(shop => (
+      return response.data.map(shop => (
         <Item key={shop.id}>
           <Link to={`/admin/shops/${shop.id}`}>
             <Img src={shop.imgUrl} fallbackSrc={westore}/>
@@ -49,23 +54,25 @@ export const Wrapper: React.FC = () => {
       ));
     },
     (SWR, index) => {
-      return SWR.data?.data?.totalPage && SWR.data?.data?.totalPage > 0 && SWR.data?.data.pageNum < SWR.data?.data.totalPage ?
-        index + 1 :
-        null;
+      return (SWR.data && SWR.data.pageNum < SWR.data.totalPage) ? index + 1 : null;
     },
     []
   );
-  return isEmpty ?
-    <Center>
-      <Space/>尚未创建店铺<Space/>
-      <MainButton onClick={() => history.push(`/admin/shops/new`)}>创建新的店铺</MainButton>
-      <Space/>
-    </Center>
-    :
-    <>
-      <List>
-        {pages}
-      </List>
+  console.log('pageCount');
+  console.log(pageCount);
+  console.log('isEmpty, isReachingEnd, isLoadingMore');
+  console.log(isEmpty, isReachingEnd, isLoadingMore);
+  return <>
+    <List>
+      {pages}
+    </List>
+    {isEmpty ?
+      <Center>
+        <Space/>尚未创建店铺<Space/>
+        <MainButton onClick={() => history.push(`/admin/shops/new`)}>创建新的店铺</MainButton>
+        <Space/>
+      </Center>
+      :
       <Padding>
         <Stretch>
           {isReachingEnd ?
@@ -75,5 +82,6 @@ export const Wrapper: React.FC = () => {
           }
         </Stretch>
       </Padding>
-    </>;
+    }
+  </>;
 };

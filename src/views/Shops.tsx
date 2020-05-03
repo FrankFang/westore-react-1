@@ -1,11 +1,10 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
-import {Loading} from '../components/Loading';
-import {SWRConfig} from 'swr';
+import swr, {SWRConfig, useSWRPages} from 'swr';
 import Icon from '../components/Icon';
 import vars from '_vars.scss';
-import {Wrapper} from './Shops.Wrapper';
 import {Link} from 'react-router-dom';
+import {Wrapper} from './Shops.Wrapper';
 
 
 const Shops: React.FC = () => {
@@ -16,9 +15,7 @@ const Shops: React.FC = () => {
           <Icon name="add" fill={vars.colorMain}/>
         </Link>
       }>
-        <Suspense fallback={<Loading/>}>
-          <Wrapper/>
-        </Suspense>
+        <Wrapper/>
       </Layout>
     </SWRConfig>
   );

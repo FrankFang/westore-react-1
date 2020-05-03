@@ -4,15 +4,12 @@ import Layout from '../components/Layout';
 import Icon from '../components/Icon';
 import {ShapedDiv} from '../components/ShapedDiv';
 import {Img} from '../components/Img';
-import {useShop} from '../hooks/useShop';
 import {Loading} from '../components/Loading';
 import styled from 'styled-components';
 import {Panel} from '../components/Panel';
 import {useGood} from '../hooks/useGood';
 import {Money} from '../components/Money';
 import vars from '_vars.scss';
-import {MainButton} from '../components/button/MainButton';
-import {MinorButton} from '../components/button/MinorButton';
 import {Space} from '../components/Space';
 import {CartBar} from '../components/CartBar';
 

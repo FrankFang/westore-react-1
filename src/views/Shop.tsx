@@ -24,6 +24,9 @@ const List = styled.div`
   display:flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  &:empty{
+    display:none;
+  }
 `;
 const Item = styled(Link)`
   display:block; width: calc(50% - 8px); background:white; margin-bottom: 16px;
@@ -71,6 +74,9 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   );
   return (
     <Wrapper shop={shop}>
+      <List>
+        {pages}
+      </List>
       {isEmpty ?
         <Center>
           <Space/>尚未创建商品<Space/>
@@ -78,20 +84,15 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
           <Space/>
         </Center>
         :
-        <>
-          <List>
-            {pages}
-          </List>
-          <Padding>
-            <Stretch>
-              {isReachingEnd ?
-                <Center>没有更多了</Center> :
-                isLoadingMore ? null :
-                  <MainButton onClick={() => loadMore()}>加载更多</MainButton>
-              }
-            </Stretch>
-          </Padding>
-        </>
+        <Padding>
+          <Stretch>
+            {isReachingEnd ?
+              <Center>没有更多了</Center> :
+              isLoadingMore ? null :
+                <MainButton onClick={() => loadMore()}>加载更多</MainButton>
+            }
+          </Stretch>
+        </Padding>
       }
     </Wrapper>
   );

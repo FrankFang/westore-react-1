@@ -7,7 +7,7 @@ import {defaultHttpClient} from '../lib/HttpClient';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 const _GoodNew: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
-  const [formData, setFormData] = useState<Partial<Good>>({
+  const [formData] = useState<Partial<Good>>({
     name: '',
     description: '',
     imgUrl: '',

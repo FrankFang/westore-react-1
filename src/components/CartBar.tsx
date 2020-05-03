@@ -1,10 +1,9 @@
 import {MainButton} from './button/MainButton';
 import {MinorButton} from './button/MinorButton';
 import Icon from './Icon';
-import React, {ElementRef, MutableRefObject, ReactNode, Ref, useEffect, useRef, useState} from 'react';
+import React, {MutableRefObject, useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import vars from '_vars.scss';
-import useSWR from 'swr';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {Link} from 'react-router-dom';
 import {useCart} from '../hooks/useCart';
@@ -31,44 +30,62 @@ interface Props {
   element?: MutableRefObject<HTMLElement | null>;
 }
 
-const addToCart = async (
-  goods: { id: number | string, number: number }[], from: HTMLElement, to: HTMLElement,
-  callback?: () => void) => {
-  await defaultHttpClient.post(`/shoppingCart`, {goods}, {autoHandlerError: true});
-  const {left, top, width, height} = from.getBoundingClientRect();
-  const clone = from.cloneNode(true) as HTMLElement;
-  Object.assign(clone.style, {
-    left: left + 'px', top: top + 'px', width: width + 'px', height: height + 'px',
-    position: 'fixed', transition: 'transform 1000ms', borderRadius: '50%',
-    transformOrigin: 'center center', zIndex: 1
-  });
-  const {left: left2, top: top2, width: width2, height: height2} = to.getBoundingClientRect();
-  const deltaX = (left2 + width2 / 2) - (left + width / 2);
-  const deltaY = (top2 + height2 / 2) - (top + height / 2);
-  const ratio = Math.min(width2 / width, height2 / height) * 0.5;
-  from.after(clone);
-  clone.getBoundingClientRect();
-  Object.assign(clone.style, {
-    transform: `translate(${deltaX}px, ${deltaY}px) scale(${ratio})`,
-  });
-  const after = () => {
-    callback?.();
-    clone.removeEventListener('transitionend', after);
-    clone.remove();
-  };
-  clone.addEventListener('transitionend', after);
-};
 export const CartBar: React.FC<Props> = (props) => {
+  const {shopId, goodId} = props;
   const button = useRef<HTMLButtonElement>(null);
-  const {cart, error} = useCart();
-
+  const {cart} = useCart();
   const [count, setCount] = useState<number | undefined>(0);
+
+  const addToCart = useCallback(async (
+    from: HTMLElement, to: HTMLElement,
+    callback?: () => void) => {
+    const found = cart?.filter(({shop, goods}) => {
+      if (shop.id === shopId) {
+        return goods.filter(g => g.id === goodId);
+      } else {
+        return false;
+      }
+    });
+    console.log('found');
+    console.log(found);
+    console.log('cart');
+    console.log(cart);
+    console.log('shopId, goodId');
+    console.log(shopId, goodId);
+    await defaultHttpClient.post(`/shoppingCart`, {goods: [{id: goodId, number: 1}]}, {autoHandlerError: true});
+    const {left, top, width, height} = from.getBoundingClientRect();
+    const clone = from.cloneNode(true) as HTMLElement;
+    Object.assign(clone.style, {
+      left: left + 'px', top: top + 'px', width: width + 'px', height: height + 'px',
+      position: 'fixed', transition: 'transform 1000ms', borderRadius: '50%',
+      transformOrigin: 'center center', zIndex: 1
+    });
+    const {left: left2, top: top2, width: width2, height: height2} = to.getBoundingClientRect();
+    const deltaX = (left2 + width2 / 2) - (left + width / 2);
+    const deltaY = (top2 + height2 / 2) - (top + height / 2);
+    const ratio = Math.min(width2 / width, height2 / height) * 0.5;
+    from.after(clone);
+    clone.getBoundingClientRect();
+    Object.assign(clone.style, {
+      transform: `translate(${deltaX}px, ${deltaY}px) scale(${ratio})`,
+    });
+    const after = () => {
+      callback?.();
+      clone.removeEventListener('transitionend', after);
+      clone.remove();
+    };
+    clone.addEventListener('transitionend', after);
+  }, [cart, shopId, goodId]);
+
+
   useEffect(() => {
     setCount(cart?.length || undefined);
-  }, [cart?.length]);
+  }, [cart]);
   const onClick = () => {
-    addToCart([{id: props.goodId, number: props.number!}],
-      props.element!.current!, button.current!, () => {
+    addToCart(
+      props.element!.current!,
+      button.current!,
+      () => {
         setCount(x => (x ?? 0) + 1);
       });
   };

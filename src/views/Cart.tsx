@@ -10,7 +10,6 @@ import vars from '_vars.scss';
 import {Money} from '../components/Money';
 import {Name} from '../components/Name';
 import {MainButton} from '../components/button/MainButton';
-import Icon from '../components/Icon';
 import {MinorButton} from '../components/button/MinorButton';
 import {defaultHttpClient} from '../lib/HttpClient';
 
@@ -40,15 +39,15 @@ const Amount = styled.span`
   flex-grow: 1;
 `;
 const getAmount = (goods: (Good & { number: number })[]) => {
-  return goods.reduce((sum, good) => sum += good.price * good.number, 0);
+  return goods.reduce((sum, good) => {
+    sum += good.price * good.number;
+    return sum;
+  }, 0);
 };
 const Footer = styled.footer`
   .order{
     flex-grow: 0;
   }
-`;
-const Edit = styled.span`
-  white-space: nowrap;
 `;
 const Remove = styled(MinorButton)`
   position:absolute; right: 0; bottom: 0;
