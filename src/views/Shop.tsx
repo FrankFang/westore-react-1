@@ -42,20 +42,20 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   });
   const {
     pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
-  } = useSWRPages<number | null, AxiosResponse<PagedResources<Good>>>(
+  } = useSWRPages<number | null, PagedResources<Good>>(
     'shops',
     ({offset, withSWR}) => {
       offset = offset || 0;
-      const {data: response} = withSWR(swr(['/goods', offset + 1, 10], (url, pageNum, pageSize) => {
-        return defaultHttpClient.get<PagedResources<Good>>(url, {
-          params: {pageNum, pageSize},
+      const {data: response} = withSWR(swr(['/goods', shopId, offset + 1, 10], async (url, shopId, pageNum, pageSize) => {
+        return (await defaultHttpClient.get<PagedResources<Good>>(url, {
+          params: {pageNum, pageSize, shopId},
           autoHandlerError: true
-        });
+        })).data;
       }));
 
       if (!response) return <Stretch><Loading/></Stretch>;
 
-      return response.data.data.map(good => (
+      return response.data.map(good => (
         <Item key={good.id} to={`/admin/shops/${shopId}/goods/${good.id}`}>
           <ShapedDiv>
             <Img src={good.imgUrl} alt=""/>
@@ -66,7 +66,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
       ));
     },
     (SWR, index) => {
-      return SWR.data?.data?.totalPage && SWR.data?.data?.totalPage > 0 && SWR.data?.data.pageNum < SWR.data?.data.totalPage ?
+      return SWR.data?.totalPage && SWR.data?.totalPage > 0 && SWR.data?.pageNum < SWR.data?.totalPage ?
         index + 1 :
         null;
     },
