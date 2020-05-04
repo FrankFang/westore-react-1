@@ -21,12 +21,17 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   'value' | 'onChange' | 'defaultValue'> {
 }
 
+interface Transform {
+  in: (string: string) => string | number,
+  out: (value: string | number) => string
+}
+
 type Props<T = any> = (
   | { data: T; onChange: (data: T) => void; }
   | { defaultData: T; })
   & {
   title?: string;
-  fields: { key: keyof T; input: InputProps; rules?: RuleForValue[] }[];
+  fields: { key: keyof T; input: InputProps; rules?: RuleForValue[]; transform?: Transform }[];
   onSubmit?: (data: T) => void;
 }
 
@@ -34,14 +39,27 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
   const [_data, _setData] = useState<T | null>('defaultData' in props ? props.defaultData : null);
   const [errors, setErrors] = useState<ErrorsFor<T> | null>(null);
   const getData = () => 'defaultData' in props ? _data : props.data;
-  const patchData = (key: keyof T, v: string) => {
+  const patchData = (key: keyof T, v: string, transform?: Transform) => {
     const fn = 'defaultData' in props ? _setData : props.onChange;
-    const value = {...getData(), [key]: v} as T;
+    const item = transform ? transform.in(v) : v;
+    if (transform) {
+      console.log('item,v');
+      console.log(item, v);
+    }
+    const value = {...getData(), [key]: item} as T;
     fn(value);
   };
   const getRules = () => {
     return props.fields.reduce((object, field) => ({...object, [field.key]: field.rules}),
       {} as RulesForFormData<T>);
+  };
+  const getValue = (key: keyof T, transform?: Transform) => {
+    const data = getData();
+    if (transform && data && data[key] !== undefined) {
+      return transform.out(data[key]);
+    } else {
+      return data?.[key];
+    }
   };
 
   const submit: React.FormEventHandler = async (e) => {
@@ -62,9 +80,9 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
         {props.fields.map(field =>
           <Fragment key={field.key.toString()}>
             <FormRow>
-              <Input {...field.input} value={getData()?.[field.key]}
+              <Input {...field.input} value={getValue(field.key, field.transform)}
                 onChange={e => {
-                  patchData(field.key, e.target.value);
+                  patchData(field.key, e.target.value, field.transform);
                 }}/>
             </FormRow>
             {errors?.[field.key] &&

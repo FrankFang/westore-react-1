@@ -6,6 +6,7 @@ import westore from '../images/westore.svg';
 import styled from 'styled-components';
 import vars from '_vars.scss';
 import {Space} from '../components/Space';
+import {useShop} from '../hooks/useShop';
 
 const Summary = styled.div`
   display:flex; justify-content: space-between; background: white;
@@ -17,6 +18,7 @@ const Summary = styled.div`
     img{ max-width: 100%; max-height: 100%;}  
   } 
   article{
+    flex-grow: 1;
     h1{
       font-size: 24px;
       line-height: 1em;
@@ -69,7 +71,7 @@ interface Props extends RouteComponentProps<{ id: string }> {
 
 const _Shop: React.FC<Props> = ({shop, children}) => {
   return (
-    <Layout title={shop?.name ?? '店铺详情'} action={
+    <Layout title="店铺详情" action={
       shop && <Link to={`/admin/shops/${shop.id}/goods/new`}>
         <Icon name="add"/>
       </Link>
@@ -79,8 +81,8 @@ const _Shop: React.FC<Props> = ({shop, children}) => {
           <img src={westore} alt=""/>
         </figure>
         <article>
-          <h1>小明的书店</h1>
-          <p>描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</p>
+          <h1>{shop?.name ?? ' '}</h1>
+          <p>{shop?.description ?? ''}</p>
         </article>
       </Summary>
 

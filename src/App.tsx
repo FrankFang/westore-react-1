@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/admin/shops/:id/edit">
           <ShopEdit/>
         </Route>
-        <Route exact path="/admin/shops/:id/goods/new">
+        <Route exact path="/admin/shops/:shopId/goods/new">
           <GoodNew/>
         </Route>
         <Route exact path="/admin/shops/:shopId/goods/:id">

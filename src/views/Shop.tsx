@@ -17,6 +17,7 @@ import {history} from '../lib/history';
 import {Center} from '../components/Center';
 import {Padding} from '../components/Padding';
 import {Name} from '../components/Name';
+import {useShop} from '../hooks/useShop';
 
 
 const List = styled.div`
@@ -36,10 +37,7 @@ const Item = styled(Link)`
 `;
 const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const shopId = props.match.params.id;
-  const {data: shop} = swr(`/shop/${shopId}`, async (key) => {
-    const response = await defaultHttpClient.get<Resource<Shop>>(key, {autoHandlerError: true});
-    return response.data.data;
-  });
+  const {shop} = useShop(shopId)
   const {
     pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
   } = useSWRPages<number | null, PagedResources<Good>>(
