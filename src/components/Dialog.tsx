@@ -2,6 +2,7 @@ import React, {ReactElement, ReactFragment, ReactNode} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {MainButton} from './button/MainButton';
+import {history} from '../lib/history';
 
 interface Props {
   visible: boolean;
@@ -100,6 +101,10 @@ const showAlert = (content: ReactNode, callback?: () => void): () => void => {
       close();
       callback?.();
     }}>确定</MainButton>);
+  const unlisten = history.listen((location, action) => {
+    close();
+    unlisten();
+  });
   return latestAlert = close;
 };
 

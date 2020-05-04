@@ -42,10 +42,6 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
   const patchData = (key: keyof T, v: string, transform?: Transform) => {
     const fn = 'defaultData' in props ? _setData : props.onChange;
     const item = transform ? transform.in(v) : v;
-    if (transform) {
-      console.log('item,v');
-      console.log(item, v);
-    }
     const value = {...getData(), [key]: item} as T;
     fn(value);
   };

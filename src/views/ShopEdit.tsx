@@ -35,7 +35,7 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
         defaultData={shop} fields={[
         {key: 'name', input: {placeholder: '* 店铺名称'}, rules: [{required: true}]},
         {key: 'description', input: {placeholder: '* 店铺描述'}, rules: [{required: true}]},
-        {key: 'imgUrl', input: {placeholder: '店铺Logo'}, rules: [{required: true}]},
+        {key: 'imgUrl', input: {placeholder: '店铺Logo'}},
       ]} onSubmit={updateShop}>
         <Stretch>
           <MainButton type="submit">保存</MainButton>
