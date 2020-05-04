@@ -25,7 +25,7 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const deleteShop = async (id: number) => {
     await defaultHttpClient.delete(`/shop/${id}`);
     showAlert('删除成功', () => {
-      history.push('/shops');
+      history.push('/admin/shops');
     });
   };
   return (
