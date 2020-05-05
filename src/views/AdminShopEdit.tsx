@@ -9,7 +9,7 @@ import {defaultHttpClient} from '../lib/HttpClient';
 import {Loading} from '../components/Loading';
 import {showAlert} from '../components/Dialog';
 import {DangerButton} from '../components/button/DangerButton';
-import {history} from '../lib/history';
+import {history, pathnameToGoBack} from '../lib/history';
 import {useShop} from '../hooks/useShop';
 import {Panel} from '../components/Panel';
 import {QRCode} from 'lib/qrcode.js';
@@ -56,6 +56,10 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
       history.push('/admin/shops');
     });
   };
+  const openShop = () => {
+    pathnameToGoBack.value = history.location.pathname;
+    history.push(`/shops/${shopId}`);
+  };
   return (
     <ShopLayout shop={shop} title="店铺管理">
       <Space/>
@@ -75,11 +79,9 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
       <Panel>
         <h1>预览</h1>
         <QRCodeWrapper ref={qrcodeRef}/>
-        <a href={`${origin}#/shops/${shopId}`}>
-          <Stretch>
-            <MainButton>打开店铺</MainButton>
-          </Stretch>
-        </a>
+        <Stretch>
+          <MainButton onClick={openShop}>打开店铺</MainButton>
+        </Stretch>
       </Panel>
 
       <Panel>
