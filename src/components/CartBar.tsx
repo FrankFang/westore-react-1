@@ -7,6 +7,7 @@ import vars from '_vars.scss';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {Link} from 'react-router-dom';
 import {useCart} from '../hooks/useCart';
+import {showAlert} from './Dialog';
 
 const Wrapper = styled.div`
   position:fixed; bottom: 0; left: 0; width: 100%; padding: 8px 16px;
@@ -40,12 +41,16 @@ export const CartBar: React.FC<Props> = (props) => {
     from: HTMLElement, to: HTMLElement,
     callback?: () => void) => {
     const found = cart?.filter(({shop, goods}) => {
-      if (shop.id === shopId) {
-        return goods.filter(g => g.id === goodId);
+      if (shop.id.toString() === shopId.toString()) {
+        return goods.filter(g => g.id.toString() === goodId.toString());
       } else {
         return false;
       }
     });
+    if (found && found.length > 0) {
+      showAlert('已添加到购物车');
+      return;
+    }
     await defaultHttpClient.post(`/shoppingCart`, {goods: [{id: goodId, number: 1}]}, {autoHandlerError: true});
     const {left, top, width, height} = from.getBoundingClientRect();
     const clone = from.cloneNode(true) as HTMLElement;
