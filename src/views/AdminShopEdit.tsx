@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
-import {Wrapper} from './Shop.Wrapper';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {ShopLayout} from './Shop.Layout';
 import {F} from '../components/Form';
 import {Space} from '../components/Space';
 import {MainButton} from '../components/button/MainButton';
@@ -15,6 +15,7 @@ import {Panel} from '../components/Panel';
 import {QRCode} from 'lib/qrcode.js';
 import styled from 'styled-components';
 import {config} from 'config';
+import {Tabs} from './AdminShop.Tabs';
 
 const {origin} = config;
 
@@ -56,7 +57,9 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
     });
   };
   return (
-    <Wrapper shop={shop}>
+    <ShopLayout shop={shop} title="店铺管理">
+      <Space/>
+      <Tabs shop={shop}/>
       <Space/>
       <F title="店铺信息"
         defaultData={shop} fields={[
@@ -72,7 +75,7 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
       <Panel>
         <h1>预览</h1>
         <QRCodeWrapper ref={qrcodeRef}/>
-        <a href={`${origin}#/shops/${shopId}`} target="_blank">
+        <a href={`${origin}#/shops/${shopId}`}>
           <Stretch>
             <MainButton>打开店铺</MainButton>
           </Stretch>
@@ -85,8 +88,8 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
           <DangerButton onClick={() => deleteShop(shop.id)}>删除店铺</DangerButton>
         </Stretch>
       </Panel>
-    </Wrapper>
+    </ShopLayout>
   );
 };
 
-export const ShopEdit = withRouter(_ShopEdit);
+export const AdminShopEdit = withRouter(_ShopEdit);

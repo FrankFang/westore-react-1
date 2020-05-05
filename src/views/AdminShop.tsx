@@ -12,10 +12,13 @@ import {Money} from '../components/Money';
 import vars from '_vars.scss';
 import {Space} from '../components/Space';
 import {MainButton} from '../components/button/MainButton';
+import {history} from '../lib/history';
 import {Center} from '../components/Center';
 import {Padding} from '../components/Padding';
 import {Name} from '../components/Name';
 import {useShop} from '../hooks/useShop';
+import {Tabs} from './AdminShop.Tabs';
+import Icon from '../components/Icon';
 
 
 const List = styled.div`
@@ -35,7 +38,7 @@ const Item = styled(Link)`
 `;
 const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const shopId = props.match.params.id;
-  const {shop} = useShop(shopId)
+  const {shop} = useShop(shopId);
   const {
     pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
   } = useSWRPages<number | null, PagedResources<Good>>(
@@ -52,7 +55,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
       if (!response) return <Stretch><Loading/></Stretch>;
 
       return response.data.map(good => (
-        <Item key={good.id} to={`/shops/${shopId}/goods/${good.id}`}>
+        <Item key={good.id} to={`/admin/shops/${shopId}/goods/${good.id}`}>
           <ShapedDiv>
             <Img src={good.imgUrl} alt=""/>
           </ShapedDiv>
@@ -69,15 +72,22 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
     []
   );
   return (
-    <ShopLayout title="店铺详情" shop={shop}>
+    <ShopLayout shop={shop} title="店铺管理" action={
+      shop &&
+      <Link to={`/admin/shops/${shop.id}/goods/new`}>
+        <Icon name="add"/>
+      </Link>
+    }>
+      <Space/>
+      <Tabs shop={shop}/>
       <List>
         {pages}
       </List>
       {isEmpty ?
         <Center>
+          <Space/>尚未创建商品<Space/>
+          <MainButton onClick={() => history.push(`/admin/shops/${shopId}/goods/new`)}>创建新的商品</MainButton>
           <Space/>
-          <Space/>
-          店铺正在准备上架商品，敬请期待
         </Center>
         :
         <Padding>
@@ -94,4 +104,4 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   );
 };
 
-export const Shop = withRouter(_Shop);
+export const AdminShop = withRouter(_Shop);

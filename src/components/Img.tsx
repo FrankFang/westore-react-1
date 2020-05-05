@@ -7,7 +7,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export const Img: React.FC<Props> = (props) => {
   const {children, alt, src, fallbackSrc, ...rest} = props;
-  const [_src, setSrc] = useState();
+  const [_src, setSrc] = useState<string | undefined>(fallbackSrc);
   useEffect(() => {
     setSrc(src);
   }, [src]);
