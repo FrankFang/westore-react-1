@@ -34,12 +34,14 @@ interface Props {
 export const CartBar: React.FC<Props> = (props) => {
   const {shopId, goodId} = props;
   const button = useRef<HTMLButtonElement>(null);
-  const {cart} = useCart();
+  const {cart, updateShopCart} = useCart();
   const [count, setCount] = useState<number | undefined>(0);
+  const isAnimating = useRef(false);
 
   const addToCart = useCallback(async (
     from: HTMLElement, to: HTMLElement,
     callback?: () => void) => {
+    if (isAnimating.current) {return;}
     const found = cart?.filter(({shop, goods}) => {
       if (shop.id.toString() === shopId.toString()) {
         return goods.filter(g => g.id.toString() === goodId.toString())?.length > 0;
@@ -51,14 +53,13 @@ export const CartBar: React.FC<Props> = (props) => {
       showAlert('已添加到购物车');
       return;
     }
-    const response = (await defaultHttpClient.post<Resource<{ shop: Shop, goods: (Good & { number: number })[] }>>(`/shoppingCart`, {
+    const {shop, goods} = (await defaultHttpClient.post<Resource<{ shop: Shop, goods: (Good & { number: number })[] }>>(`/shoppingCart`, {
       goods: [{
         id: goodId,
         number: 1
       }]
-    }, {autoHandlerError: true})).data;
-    console.log('response');
-    console.log(response);
+    }, {autoHandlerError: true})).data.data;
+    isAnimating.current = true;
     const {left, top, width, height} = from.getBoundingClientRect();
     const clone = from.cloneNode(true) as HTMLElement;
     Object.assign(clone.style, {
@@ -79,13 +80,15 @@ export const CartBar: React.FC<Props> = (props) => {
       callback?.();
       clone.removeEventListener('transitionend', after);
       clone.remove();
+      isAnimating.current = false;
+      updateShopCart(shop.id, shop, goods);
     };
     clone.addEventListener('transitionend', after);
   }, [cart, shopId, goodId]);
 
 
   useEffect(() => {
-    setCount(cart?.length || undefined);
+    setCount(cart?.reduce((sum, {shop, goods}) => sum + goods.length, 0) || undefined);
   }, [cart]);
   const onClick = () => {
     addToCart(
