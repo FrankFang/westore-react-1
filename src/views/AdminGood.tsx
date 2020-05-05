@@ -26,7 +26,9 @@ const _Good: React.FC<RouteComponentProps<{ shopId: string, id: string }>> = (pr
   const {good} = useGood(id);
   const cover = useRef<HTMLDivElement>(null);
   return (
-    <Layout title={'商品详情'}>
+    <Layout title={'商品详情'} action={
+      <Link to={`/admin/shops/${shopId}/goods/${id}/edit`}><Icon name="edit"/></Link>
+    }>
       {good ?
         <>
           <Cover ref={cover}>
@@ -60,10 +62,9 @@ const _Good: React.FC<RouteComponentProps<{ shopId: string, id: string }>> = (pr
         :
         <Loading/>
       }
-      <CartBar goodId={id} element={cover} shopId={shopId}/>
     </Layout>
 
   );
 };
 
-export const Good = withRouter(_Good);
+export const AdminGood = withRouter(_Good);

@@ -7,12 +7,13 @@ import {ShopNew} from './views/ShopNew';
 import {AdminShop} from './views/AdminShop';
 import {AdminShopEdit} from './views/AdminShopEdit';
 import {GoodNew} from './views/GoodNew';
-import {Good} from './views/Good';
+import {AdminGood} from './views/AdminGood';
 import {GoodEdit} from './views/GoodEdit';
 import {Cart} from './views/Cart';
 import {Me} from './views/Me';
 import {SWRConfig} from 'swr';
 import {Shop} from 'views/Shop';
+import {Good} from 'views/Good';
 
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
             <GoodNew/>
           </Route>
           <Route exact path="/admin/shops/:shopId/goods/:id">
+            <AdminGood/>
+          </Route>
+          <Route exact path="/shops/:shopId/goods/:id">
             <Good/>
           </Route>
           <Route exact path="/admin/shops/:shopId/goods/:id/edit">
