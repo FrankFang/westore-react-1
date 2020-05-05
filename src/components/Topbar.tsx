@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from './Icon';
 import styled from 'styled-components';
 import vars from '_vars.scss';
-import {history, pathnameToGoBack} from '../lib/history';
+import {history} from '../lib/history';
 import {matchPath} from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -30,14 +30,9 @@ const Placeholder = styled.div`
   text-align:right;
 `;
 const goBack = () => {
-  if (pathnameToGoBack.value) {
-    history.push(pathnameToGoBack.value);
-    pathnameToGoBack.value = '';
-    return;
-  }
   const {pathname} = history.location;
   const backs: { [K: string]: string } = {
-    '/shops/:shopId/goods/:id': '/shops/:shopId'
+    '/shops/:shopId/goods/:id': '/shops/:shopId',
   };
   for (let key in backs) {
     const route = matchPath<{ [k: string]: string }>(

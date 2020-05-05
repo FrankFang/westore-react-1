@@ -42,7 +42,7 @@ export const CartBar: React.FC<Props> = (props) => {
     callback?: () => void) => {
     const found = cart?.filter(({shop, goods}) => {
       if (shop.id.toString() === shopId.toString()) {
-        return goods.filter(g => g.id.toString() === goodId.toString());
+        return goods.filter(g => g.id.toString() === goodId.toString())?.length > 0;
       } else {
         return false;
       }
@@ -51,7 +51,14 @@ export const CartBar: React.FC<Props> = (props) => {
       showAlert('已添加到购物车');
       return;
     }
-    await defaultHttpClient.post(`/shoppingCart`, {goods: [{id: goodId, number: 1}]}, {autoHandlerError: true});
+    const response = (await defaultHttpClient.post<Resource<{ shop: Shop, goods: (Good & { number: number })[] }>>(`/shoppingCart`, {
+      goods: [{
+        id: goodId,
+        number: 1
+      }]
+    }, {autoHandlerError: true})).data;
+    console.log('response');
+    console.log(response);
     const {left, top, width, height} = from.getBoundingClientRect();
     const clone = from.cloneNode(true) as HTMLElement;
     Object.assign(clone.style, {

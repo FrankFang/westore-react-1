@@ -1,10 +1,17 @@
 import {createHashHistory} from 'history';
 
 export const history = createHashHistory();
-export let pathnameBeforeSignIn = {
+
+let _pathnameBeforeSignIn = window.localStorage.getItem('pathnameBeforeSignIn') || '';
+export const pathnameBeforeSignIn = Object.defineProperty({
   value: ''
-};
-export let pathnameToGoBack = {
-  value: ''
-};
+}, 'value', {
+  get() {
+    return _pathnameBeforeSignIn;
+  },
+  set(v: string) {
+    _pathnameBeforeSignIn = v;
+    window.localStorage.setItem('pathnameBeforeSignIn', v);
+  }
+});
 

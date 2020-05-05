@@ -9,7 +9,7 @@ import {defaultHttpClient} from '../lib/HttpClient';
 import {Loading} from '../components/Loading';
 import {showAlert} from '../components/Dialog';
 import {DangerButton} from '../components/button/DangerButton';
-import {history, pathnameToGoBack} from '../lib/history';
+import {history} from '../lib/history';
 import {useShop} from '../hooks/useShop';
 import {Panel} from '../components/Panel';
 import {QRCode} from 'lib/qrcode.js';
@@ -58,7 +58,6 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
     });
   };
   const openShop = () => {
-    pathnameToGoBack.value = history.location.pathname;
     history.push(`/shops/${shopId}`);
   };
   return (
