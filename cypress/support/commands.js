@@ -24,17 +24,22 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', ({apiBaseUrl, tel}) => {
+const login = ({apiBaseUrl, tel}) => {
   apiBaseUrl = apiBaseUrl || Cypress.env('apiBaseUrl') || 'http://localhost:8010/api/v1'
-  return cy.request('POST', apiBaseUrl + '/code', {tel}).then(() => {
-    cy.request('POST', apiBaseUrl + '/login', {tel, code: '000000'})
-  })
+  cy.request('POST', apiBaseUrl + '/code', {tel})
+  cy.request('POST', apiBaseUrl + '/login', {tel, code: '000000'})
+}
+
+Cypress.Commands.add('loginByTel', (tel) => {
+  tel = tel || new Date().valueOf().toString().slice(0, 11)
+  return login({tel})
 })
-Cypress.Commands.add('loginNewUser', () => {
-  return cy.login({tel: new Date().valueOf().toString().slice(0, 11)})
-})
+
 Cypress.Commands.add('mutate', key => {
   cy.window().then(win => {
     win.swrMutate(key)
   })
+})
+
+Cypress.Commands.add('createShop', () => {
 })

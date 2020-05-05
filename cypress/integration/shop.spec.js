@@ -1,9 +1,6 @@
 describe('创建店铺', () => {
   beforeEach(() => {
     cy.viewport('iphone-x')
-  })
-  it('创建第一个店铺', () => {
-    cy.loginNewUser()
     cy.server()
     cy.route('GET', '/api/v1/shop?**').as('shops')
     cy.route('GET', '/api/v1/goods?**').as('goods')
@@ -11,6 +8,8 @@ describe('创建店铺', () => {
     cy.route('PATCH', '/api/v1/shop/**').as('updateShop')
     cy.route('GET', '/api/v1/shop/**').as('getShop')
     cy.route('DELETE', '/api/v1/shop/**').as('deleteShop')
+  })
+  const createShop = () => {
     cy.visit('#/admin/shops')
     cy.wait('@shops').its('status').should('be', 200)
     cy.contains('创建新的店铺').should('exist').click()
@@ -20,6 +19,15 @@ describe('创建店铺', () => {
     cy.contains('创建成功').should('exist')
     cy.contains('确定').click()
     cy.mutate(['/shop', 1, 10])
+    return cy.wait('@shops').then(xhr => {
+      shopId = xhr.response.body.data[0].id
+      assert.isNumber(shopId)
+      return shopId
+    })
+  }
+  it('创建第一个店铺', () => {
+    cy.loginByTel()
+    createShop().as('shopId')
     cy.contains('小明的店铺1').should('exist').click()
     cy.wait('@goods').its('status').should('be', 200)
     cy.contains('创建新的商品').should('exist').click()
@@ -45,5 +53,9 @@ describe('创建店铺', () => {
     cy.contains('确定').click()
     cy.hash().should('eq', '#/admin/shops')
     cy.contains('尚未创建店铺').should('exist')
+    // 注销
+    cy.contains('个人').click()
+    cy.contains('登出').click()
+    cy.contains('确定').click()
   })
 })

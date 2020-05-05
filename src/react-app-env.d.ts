@@ -69,3 +69,8 @@ declare module '_vars.scss' {
   const vars: any;
   export default vars;
 }
+
+declare module 'lib/qrcode.js' {
+  const QRCode: any;
+  export {QRCode};
+}

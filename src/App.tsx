@@ -11,47 +11,53 @@ import {Good} from './views/Good';
 import {GoodEdit} from './views/GoodEdit';
 import {Cart} from './views/Cart';
 import {Me} from './views/Me';
+import {SWRConfig} from 'swr';
 
 
 function App() {
   return (
-    <Router history={history}>
-      <Switch>
-        <Route exact path="/admin/shops">
-          <Shops/>
-        </Route>
-        <Route exact path="/admin/shops/new">
-          <ShopNew/>
-        </Route>
-        <Route exact path="/admin/shops/:id">
-          <Shop/>
-        </Route>
-        <Route exact path="/admin/shops/:id/edit">
-          <ShopEdit/>
-        </Route>
-        <Route exact path="/admin/shops/:shopId/goods/new">
-          <GoodNew/>
-        </Route>
-        <Route exact path="/admin/shops/:shopId/goods/:id">
-          <Good/>
-        </Route>
-        <Route exact path="/admin/shops/:shopId/goods/:id/edit">
-          <GoodEdit/>
-        </Route>
-        <Route exact path="/sign_in">
-          <SignIn/>
-        </Route>
-        <Route exact path="/cart">
-          <Cart/>
-        </Route>
-        <Route exact path="/me">
-          <Me/>
-        </Route>
-        <Redirect exact from="/" to="/admin/shops"/>
-        <Route path="*">
-        </Route>
-      </Switch>
-    </Router>
+    <SWRConfig value={{shouldRetryOnError: false}}>
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/admin/shops">
+            <Shops/>
+          </Route>
+          <Route exact path="/admin/shops/new">
+            <ShopNew/>
+          </Route>
+          <Route exact path="/admin/shops/:id">
+            <Shop/>
+          </Route>
+          <Route exact path="/shops/:id">
+            <Shop/>
+          </Route>
+          <Route exact path="/admin/shops/:id/edit">
+            <ShopEdit/>
+          </Route>
+          <Route exact path="/admin/shops/:shopId/goods/new">
+            <GoodNew/>
+          </Route>
+          <Route exact path="/admin/shops/:shopId/goods/:id">
+            <Good/>
+          </Route>
+          <Route exact path="/admin/shops/:shopId/goods/:id/edit">
+            <GoodEdit/>
+          </Route>
+          <Route exact path="/sign_in">
+            <SignIn/>
+          </Route>
+          <Route exact path="/cart">
+            <Cart/>
+          </Route>
+          <Route exact path="/me">
+            <Me/>
+          </Route>
+          <Redirect exact from="/" to="/admin/shops"/>
+          <Route path="*">
+          </Route>
+        </Switch>
+      </Router>
+    </SWRConfig>
   );
 }
 

@@ -39,7 +39,7 @@ export const Me: React.FC = () => {
   const signOut = async () => {
     await defaultHttpClient.post(`/logout`, null, {autoHandlerError: true});
     showAlert('登出成功', () => {
-      history.push('/');
+      history.push('/sign_in');
     });
   };
   return (

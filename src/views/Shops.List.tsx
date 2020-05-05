@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 
 export const List: React.FC = () => {
   const {
-    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore, pageCount, pageSWRs
+    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
   } = useSWRPages<number | null, PagedResources<Shop>>(
     'shops',
     ({offset, withSWR}) => {
@@ -38,7 +38,7 @@ export const List: React.FC = () => {
         })).data;
       }));
 
-      if (!response) return <Stretch><Loading/></Stretch>;
+      if (!response) return <Loading/>;
 
       return response.data.map(shop => (
         <Item key={shop.id}>

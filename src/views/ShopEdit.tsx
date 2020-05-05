@@ -1,5 +1,5 @@
-import React from 'react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import React, {useEffect, useRef} from 'react';
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 import {Wrapper} from './Shop.Wrapper';
 import {F} from '../components/Form';
 import {Space} from '../components/Space';
@@ -12,9 +12,36 @@ import {DangerButton} from '../components/button/DangerButton';
 import {history} from '../lib/history';
 import {useShop} from '../hooks/useShop';
 import {Panel} from '../components/Panel';
+import {QRCode} from 'lib/qrcode.js';
+import styled from 'styled-components';
+import {config} from 'config';
+
+const {origin} = config;
+
+const QRCodeWrapper = styled.div`
+  width: 128px; 
+  height: 128px; 
+  margin: 16px auto;
+`;
 
 const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const {shop, mutate} = useShop(props.match.params.id);
+  const shopId = shop?.id;
+  const qrcodeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!qrcodeRef.current) {return;}
+    var qrcode = new QRCode(qrcodeRef.current, {
+      text: `${origin}/shops/${shopId}`,
+      width: 128,
+      height: 128,
+      colorDark: '#000',
+      colorLight: '#FFF',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    return () => {
+      qrcode.clear();
+    };
+  }, [shopId]);
   if (!shop) {return <Loading/>;}
 
   const updateShop = async (data: typeof shop) => {
@@ -41,6 +68,16 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
           <MainButton type="submit">保存</MainButton>
         </Stretch>
       </F>
+
+      <Panel>
+        <h1>预览</h1>
+        <QRCodeWrapper ref={qrcodeRef}/>
+        <a href={`${origin}#/shops/${shopId}`} target="_blank">
+          <Stretch>
+            <MainButton>打开店铺</MainButton>
+          </Stretch>
+        </a>
+      </Panel>
 
       <Panel>
         <h1>其他设置</h1>

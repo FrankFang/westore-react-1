@@ -52,9 +52,9 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
   const getValue = (key: keyof T, transform?: Transform) => {
     const data = getData();
     if (transform && data && data[key] !== undefined) {
-      return transform.out(data[key]);
+      return transform.out(data[key]) ?? '';
     } else {
-      return data?.[key];
+      return data?.[key] ?? '';
     }
   };
 
@@ -76,7 +76,7 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
         {props.fields.map(field =>
           <Fragment key={field.key.toString()}>
             <FormRow>
-              <Input {...field.input} value={getValue(field.key, field.transform) || ''}
+              <Input {...field.input} value={getValue(field.key, field.transform)}
                 onChange={e => {
                   patchData(field.key, e.target.value, field.transform);
                 }}/>

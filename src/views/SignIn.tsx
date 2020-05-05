@@ -37,6 +37,7 @@ export const SignIn: React.FC = () => {
       throw error;
     });
     history.push(pathnameBeforeSignIn.value || '/');
+    pathnameBeforeSignIn.value = '';
   };
   const {setCodeSent, sendCodeButton} = useSendCodeButton(async () => {
     const errors = await validate({tel: formData.tel}, {
