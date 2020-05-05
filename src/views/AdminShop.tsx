@@ -52,7 +52,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
         })).data;
       }));
 
-      if (!response) return <Stretch><Loading/></Stretch>;
+      if (!response) return <Loading/>;
 
       return response.data.map(good => (
         <Item key={good.id} to={`/admin/shops/${shopId}/goods/${good.id}`}>

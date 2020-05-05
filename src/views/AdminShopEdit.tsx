@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom';
 import {ShopLayout} from './Shop.Layout';
 import {F} from '../components/Form';
 import {Space} from '../components/Space';
@@ -16,6 +16,7 @@ import {QRCode} from 'lib/qrcode.js';
 import styled from 'styled-components';
 import {config} from 'config';
 import {Tabs} from './AdminShop.Tabs';
+import Icon from '../components/Icon';
 
 const {origin} = config;
 
@@ -61,7 +62,12 @@ const _ShopEdit: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
     history.push(`/shops/${shopId}`);
   };
   return (
-    <ShopLayout shop={shop} title="店铺管理">
+    <ShopLayout shop={shop} title="店铺管理" action={
+      shop &&
+      <Link to={`/admin/shops/${shop.id}/goods/new`}>
+        <Icon name="add"/>
+      </Link>
+    }>
       <Space/>
       <Tabs shop={shop}/>
       <Space/>
