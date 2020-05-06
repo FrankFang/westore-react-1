@@ -64,7 +64,7 @@ class HttpClient {
 const isDev = () => window.location.hostname === 'localhost';
 
 const defaultHttpClient = new HttpClient(
-  isDev ? 'http://localhost:8010/api/v1/' : 'http://hc.xiedaimala.com:8010/api/v1/',
+  isDev() ? 'http://localhost:8010/api/v1/' : 'http://hc.xiedaimala.com:8010/api/v1/',
   (error) => {
     if (error.isAxiosError) {
       const {response} = error as AxiosError;
