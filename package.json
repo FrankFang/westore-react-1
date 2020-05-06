@@ -24,7 +24,6 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "classnames": "^2.2.6",
     "css-loader": "3.4.2",
-    "cypress": "4.5.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^6.6.0",
@@ -79,8 +78,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "cors": "lcp --proxyUrl http://hc.xiedaimala.com:8080/ --origin http://localhost:3000 --proxyPartial \"\" --credentials",
-    "cy:run": "yarn add cypress@4.5.0 && cypress run",
-    "cy:open": "yarn add cypress@4.5.0 && cypress open"
+    "cy:run": "cypress run",
+    "cy:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
