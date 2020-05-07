@@ -16,7 +16,9 @@ import {Shop} from 'views/Shop';
 import {Good} from 'views/Good';
 import {OrderNew} from 'views/OrderNew';
 import {Pay} from './views/Pay';
+import {AdminOrders} from './views/AdminOrders';
 
+import {AdminOrder} from './views/AdminOrder';
 
 function App() {
   return (
@@ -55,6 +57,12 @@ function App() {
           </Route>
           <Route exact path="/orders/:id/pay">
             <Pay/>
+          </Route>
+          <Route exact path="/admin/orders">
+            <AdminOrders/>
+          </Route>
+          <Route exact path="/admin/orders/:id">
+            <AdminOrder/>
           </Route>
           <Route exact path="/sign_in">
             <SignIn/>

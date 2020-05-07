@@ -20,6 +20,7 @@ export const Form = styled.form`
 
 interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   'value' | 'onChange' | 'defaultValue'> {
+  label?: string;
 }
 
 interface Transform {
@@ -32,7 +33,12 @@ type Props<T = any> = (
   | { defaultData: T; })
   & {
   title?: string;
-  fields: { key: keyof T; input: InputProps; rules?: RuleForValue[]; transform?: Transform }[];
+  fields: {
+    key: keyof T;
+    input: InputProps;
+    rules?: RuleForValue[];
+    transform?: Transform;
+  }[];
   onSubmit?: (data: T) => void;
 }
 

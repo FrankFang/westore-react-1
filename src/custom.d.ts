@@ -51,10 +51,14 @@ interface User {
 
 interface Order {
   id: number;
+  totalPrice?: number,
   expressCompany: null;
   expressId: null;
-  status: string;
+  status: 'pending' | 'paid' | 'delivered' | 'received';
   address: string;
   shop: Shop;
-  goods: (Good & { number: number })[]
+  goods: (Good & { number: number })[];
+  createdAt?: string;
 }
+
+type OrderStatus = typeof Order['status']
