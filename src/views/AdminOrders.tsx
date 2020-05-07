@@ -39,7 +39,7 @@ export const AdminOrders: React.FC = () => {
     </Item>
   ));
   return (
-    <Layout title="我的订单" hasBack={false}>
+    <Layout title="我的订单" hasBack={false} footer={<Nav/>}>
       <List>
         {orders}
       </List>
