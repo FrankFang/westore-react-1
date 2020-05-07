@@ -13,6 +13,8 @@ import {MainButton} from '../components/button/MainButton';
 import {MinorButton} from '../components/button/MinorButton';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {Link} from 'react-router-dom';
+import {getAmount} from '../lib/getAmount';
+import {showAlert} from '../components/Dialog';
 
 const GoodsList = styled.div`
   margin-top: 16px;
@@ -39,12 +41,6 @@ const Item = styled.div`
 const Amount = styled.span`
   flex-grow: 1;
 `;
-const getAmount = (goods: (Good & { number: number })[]) => {
-  return goods.reduce((sum, good) => {
-    sum += good.price * good.number;
-    return sum;
-  }, 0);
-};
 const Footer = styled.footer`
   .order{
     flex-grow: 0;

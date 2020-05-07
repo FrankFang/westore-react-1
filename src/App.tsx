@@ -14,6 +14,7 @@ import {Me} from './views/Me';
 import {SWRConfig} from 'swr';
 import {Shop} from 'views/Shop';
 import {Good} from 'views/Good';
+import {OrderNew} from 'views/OrderNew';
 
 
 function App() {
@@ -47,6 +48,9 @@ function App() {
           </Route>
           <Route exact path="/admin/shops/:shopId/goods/:id/edit">
             <GoodEdit/>
+          </Route>
+          <Route exact path="/orders/new">
+            <OrderNew/>
           </Route>
           <Route exact path="/sign_in">
             <SignIn/>

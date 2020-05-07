@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import {defaultHttpClient} from '../lib/HttpClient';
 
 export const useCart = () => {
-  const {data: cart, error, mutate} = useSWR('/shoppingCart', async (url) => {
+  const {data: cart, error, mutate, isValidating} = useSWR('/shoppingCart', async (url) => {
     return (await defaultHttpClient.get<PagedResources<Cart>>(url, {
       params: {pageSize: 100, pageNum: 1},
       autoHandlerError: true
@@ -14,6 +14,6 @@ export const useCart = () => {
     mutate([...cart.slice(0, index), {shop, goods}, ...cart.slice(index)]);
   };
   return {
-    cart, error, updateShopCart
+    cart, error, updateShopCart, isValidating
   };
 };

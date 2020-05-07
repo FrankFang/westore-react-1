@@ -48,3 +48,4 @@ interface User {
   avatarUrl: string;
   address: string;
 }
+

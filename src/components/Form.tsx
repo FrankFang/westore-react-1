@@ -12,7 +12,8 @@ export const Form = styled.form`
     margin-bottom: 8px;
     &:empty{display:none;}
   }
-  > .fields{
+  > .fields{ }
+  > footer{
     margin-bottom: 32px;
   }
 `;
@@ -89,7 +90,10 @@ export function F<T extends { [K: string]: any }>(props: PropsWithChildren<Props
           </Fragment>
         )}
       </div>
-      {props.children}
+      {props.children &&
+      <footer>
+        {props.children}
+      </footer>}
     </Form>
   );
 }
