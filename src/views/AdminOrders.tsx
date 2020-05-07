@@ -8,6 +8,13 @@ import {orderStatusMap} from '../maps/OrderStatus';
 import vars from '_vars.scss';
 import Icon from '../components/Icon';
 import {Link} from 'react-router-dom';
+import {Center} from '../components/Center';
+import {Space} from '../components/Space';
+import {MainButton} from '../components/button/MainButton';
+import {history} from '../lib/history';
+import {Padding} from '../components/Padding';
+import {Stretch} from '../components/Stretch';
+import Nav from '../components/Nav';
 
 const Item = styled(Link)`
   height: ${vars.heightItem}; 
@@ -24,7 +31,7 @@ const Status = styled.span`
   margin-right: 16px;
 `;
 export const AdminOrders: React.FC = () => {
-  const {pages} = useOrders(order => (
+  const {pages: orders, isEmpty, isReachingEnd, loadMore, isLoadingMore} = useOrders(order => (
     <Item to={`/admin/orders/${order.id}`}>
       <Money>{getAmount(order.goods)}</Money>
       <Status>{orderStatusMap[order.status]}</Status>
@@ -32,10 +39,25 @@ export const AdminOrders: React.FC = () => {
     </Item>
   ));
   return (
-    <Layout title="所有订单">
+    <Layout title="所有订单" footer={<Nav/>} hasBack={false}>
       <List>
-        {pages}
+        {orders}
       </List>
+      {isEmpty ?
+        <Center>
+          <Space/>没有订单<Space/>
+        </Center>
+        :
+        <Padding>
+          <Stretch>
+            {isReachingEnd ?
+              <Center>没有更多了</Center> :
+              isLoadingMore ? null :
+                <MainButton onClick={() => loadMore()}>加载更多</MainButton>
+            }
+          </Stretch>
+        </Padding>
+      }
     </Layout>
   );
 };
