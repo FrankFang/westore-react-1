@@ -21,6 +21,7 @@ import {Orders} from './views/Orders';
 import {AdminOrder} from './views/AdminOrder';
 import styled from 'styled-components';
 import {Order} from './views/Order';
+import {AdminOrders} from './views/AdminOrders';
 
 const Wrapper = styled.div`
   max-width: 500px;
@@ -42,9 +43,6 @@ function App() {
             <Route exact path="/admin/shops/:id">
               <AdminShop/>
             </Route>
-            <Route exact path="/shops/:id">
-              <Shop/>
-            </Route>
             <Route exact path="/admin/shops/:id/edit">
               <AdminShopEdit/>
             </Route>
@@ -54,11 +52,17 @@ function App() {
             <Route exact path="/admin/shops/:shopId/goods/:id">
               <AdminGood/>
             </Route>
-            <Route exact path="/shops/:shopId/goods/:id">
-              <Good/>
-            </Route>
             <Route exact path="/admin/shops/:shopId/goods/:id/edit">
               <GoodEdit/>
+            </Route>
+            <Route exact path="/admin/orders">
+              <AdminOrders/>
+            </Route>
+            <Route exact path="/admin/orders/:id">
+              <AdminOrder/>
+            </Route>
+            <Route exact path="/orders">
+              <Orders/>
             </Route>
             <Route exact path="/orders/new">
               <OrderNew/>
@@ -66,17 +70,14 @@ function App() {
             <Route exact path="/orders/:id/pay">
               <Pay/>
             </Route>
-            <Route exact path="/admin/orders">
-              <Orders/>
+            <Route exact path="/shops/:shopId/goods/:id">
+              <Good/>
             </Route>
-            <Route exact path="/orders">
-              <Orders/>
+            <Route exact path="/shops/:id">
+              <Shop/>
             </Route>
             <Route exact path="/orders/:id">
               <Order/>
-            </Route>
-            <Route exact path="/admin/orders/:id">
-              <AdminOrder/>
             </Route>
             <Route exact path="/sign_in">
               <SignIn/>
