@@ -41,11 +41,12 @@ interface Props extends RouteComponentProps<{ id: string }> {
   shop?: Shop;
   action?: ReactNode;
   title: string;
+  footer?: ReactNode;
 }
 
-const _Shop: React.FC<Props> = ({shop, title, action, children}) => {
+const _Shop: React.FC<Props> = ({shop, title, action, children, footer}) => {
   return (
-    <Layout title={title} action={action}>
+    <Layout title={title} action={action} footer={footer}>
       <Summary>
         <figure>
           <img src={westore} alt=""/>

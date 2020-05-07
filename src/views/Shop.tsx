@@ -16,6 +16,8 @@ import {Center} from '../components/Center';
 import {Padding} from '../components/Padding';
 import {Name} from '../components/Name';
 import {useShop} from '../hooks/useShop';
+import {AdminNav} from '../components/AdminNav';
+import {Nav} from '../components/Nav';
 
 
 const List = styled.div`
@@ -68,7 +70,7 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
     [shopId]
   );
   return (
-    <ShopLayout title="店铺详情" shop={shop}>
+    <ShopLayout title="店铺详情" shop={shop} footer={<Nav/>}>
       <List>
         {goods}
       </List>

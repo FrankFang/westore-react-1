@@ -14,7 +14,7 @@ import {MainButton} from '../components/button/MainButton';
 import {history} from '../lib/history';
 import {Padding} from '../components/Padding';
 import {Stretch} from '../components/Stretch';
-import Nav from '../components/Nav';
+import { AdminNav } from 'components/AdminNav';
 
 const Item = styled(Link)`
   height: ${vars.heightItem}; 
@@ -39,7 +39,7 @@ export const AdminOrders: React.FC = () => {
     </Item>
   ));
   return (
-    <Layout title="我的订单" hasBack={false} footer={<Nav/>}>
+    <Layout title="我的订单" hasBack={false} footer={<AdminNav/>}>
       <List>
         {orders}
       </List>

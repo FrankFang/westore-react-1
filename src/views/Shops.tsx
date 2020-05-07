@@ -4,7 +4,7 @@ import Icon from '../components/Icon';
 import vars from '_vars.scss';
 import {Link} from 'react-router-dom';
 import {List} from './Shops.List';
-import Nav from '../components/Nav';
+import {AdminNav} from '../components/AdminNav';
 
 
 const Shops: React.FC = () => {
@@ -13,7 +13,7 @@ const Shops: React.FC = () => {
       <Link to="/admin/shops/new">
         <Icon name="add" fill={vars.colorMain}/>
       </Link>
-    } footer={<Nav/>}>
+    } footer={<AdminNav/>}>
       <List/>
     </Layout>
   );

@@ -12,10 +12,9 @@ import {Loading} from '../components/Loading';
 import {showAlert} from '../components/Dialog';
 import {history, pathnameBeforeSignIn} from '../lib/history';
 import {Center} from '../components/Center';
-import {AdminNav} from 'components/AdminNav';
-import {Nav} from '../components/Nav';
+import { AdminNav } from 'components/AdminNav';
 
-export const Me: React.FC = () => {
+export const AdminMe: React.FC = () => {
   const {data} = useSWR('/status', async (url) =>
     (await defaultHttpClient.get<{ login: boolean; user: User }>(url, {autoHandlerError: true})).data
   );
@@ -44,7 +43,7 @@ export const Me: React.FC = () => {
     });
   };
   return (
-    <Layout title="个人页面" footer={<Nav/>} hasBack={false}>
+    <Layout title="个人页面" footer={<AdminNav/>} hasBack={false}>
       <Space/>
       {user ?
         <>

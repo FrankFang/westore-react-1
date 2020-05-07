@@ -14,7 +14,7 @@ import {MainButton} from '../components/button/MainButton';
 import {history} from '../lib/history';
 import {Padding} from '../components/Padding';
 import {Stretch} from '../components/Stretch';
-import Nav from '../components/Nav';
+import {Nav} from '../components/Nav';
 
 const Item = styled(Link)`
   height: ${vars.heightItem}; 
@@ -39,7 +39,7 @@ export const Orders: React.FC = () => {
     </Item>
   ));
   return (
-    <Layout title="我的订单" hasBack={false}>
+    <Layout title="我的订单" hasBack={false} footer={<Nav/>}>
       <List>
         {orders}
       </List>

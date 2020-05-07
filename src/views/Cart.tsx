@@ -17,6 +17,7 @@ import {getAmount} from '../lib/getAmount';
 import {showAlert} from '../components/Dialog';
 import {GoodsList} from '../components/GoodsList';
 import {OrderItem} from '../components/OrderItem';
+import {Nav} from '../components/Nav';
 
 const Amount = styled.span`
   flex-grow: 1;
@@ -44,7 +45,7 @@ export const Cart: React.FC = (props) => {
   return (
     <Layout title="购物车" action={
       <span onClick={toggleEdit}>{edit ? '取消' : '编辑'}</span>
-    }>
+    } footer={<Nav/>}>
       {cart ?
         cart.map(({shop, goods}) => (
           <Panel key={shop.id}>

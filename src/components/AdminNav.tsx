@@ -27,16 +27,16 @@ const NavWrapper = styled.nav`
   }
 `;
 
-export const Nav = () => {
+export const AdminNav = () => {
   return (
     <NavWrapper>
-      <NavLink to="/orders" exact activeClassName="active">
+      <NavLink to="/admin/shops" exact activeClassName="active">
+        <Icon name="shop"/>
+        <span>店铺</span>
+      </NavLink>
+      <NavLink to="/admin/orders" exact activeClassName="active">
         <Icon name="order"/>
         <span>订单</span>
-      </NavLink>
-      <NavLink to="/cart" exact activeClassName="active">
-        <Icon name="cart"/>
-        <span>购物车</span>
       </NavLink>
       <NavLink to="/me" exact activeClassName="active">
         <Icon name="user"/>

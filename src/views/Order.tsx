@@ -90,6 +90,11 @@ const _Order: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
         </Footer>
       </Panel>
 
+      <F title="收件人" defaultData={order} fields={[
+        {key: 'address', input: {type: 'text', label: '收件地址', readOnly: true}},
+      ]}>
+      </F>
+
       <F title="物流信息" defaultData={order} fields={[
         {key: 'expressCompany', input: {label: '物流公司', readOnly: true, placeholder: '空'}},
         {key: 'expressId', input: {label: '物流单号', readOnly: true, placeholder: '空'}},
