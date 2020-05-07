@@ -37,11 +37,15 @@ const _OrderNew: React.FC<RouteComponentProps> = (props) => {
 
     const {shop, goods} = shopAndGoods;
     const pay = async () => {
-      const response = await defaultHttpClient.post('/order', {
+      const response = await defaultHttpClient.post<Resource<Order>>('/order', {
         address: `${formData.address}`,
         goods: goods.map(g => ({id: g.id, number: g.number}))
       }, {autoHandlerError: true});
       console.log(response);
+      await Promise.all(goods.map(g =>
+        defaultHttpClient.delete(`/shoppingCart/${g.id}`)
+      ));
+      history.push(`/orders/${response.data.data.id}/pay`);
     };
 
     return (
@@ -69,7 +73,9 @@ const _OrderNew: React.FC<RouteComponentProps> = (props) => {
     return (
       <Center>
         <Space/>
-        购物车被清空了，所以无法创建订单
+        购物车是空的
+        <Space/>
+        <p><Link to={`/shops/${shopId}`}><MainButton>返回购物</MainButton></Link></p>
         <Space/>
       </Center>
     );

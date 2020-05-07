@@ -49,3 +49,12 @@ interface User {
   address: string;
 }
 
+interface Order {
+  id: number;
+  expressCompany: null;
+  expressId: null;
+  status: string;
+  address: string;
+  shop: Shop;
+  goods: (Good & { number: number })[]
+}
