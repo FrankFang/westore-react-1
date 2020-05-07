@@ -107,6 +107,9 @@
     "svg-sprite-loader": "^4.2.2",
     "svgo-loader": "^2.2.1"
   },
+  "resolutions": {
+    "core-js": "^3.5.0"
+  },
   "jest": {
     "roots": [
       "<rootDir>/src"
