@@ -30,16 +30,16 @@ const Status = styled.span`
   margin-left: auto;
   margin-right: 16px;
 `;
-export const AdminOrders: React.FC = () => {
+export const Orders: React.FC = () => {
   const {pages: orders, isEmpty, isReachingEnd, loadMore, isLoadingMore} = useOrders(order => (
-    <Item to={`/admin/orders/${order.id}`}>
+    <Item to={`/orders/${order.id}`}>
       <Money>{getAmount(order.goods)}</Money>
       <Status>{orderStatusMap[order.status]}</Status>
       <Icon name="right"/>
     </Item>
   ));
   return (
-    <Layout title="所有订单" footer={<Nav/>} hasBack={false}>
+    <Layout title="我的订单" hasBack={false}>
       <List>
         {orders}
       </List>

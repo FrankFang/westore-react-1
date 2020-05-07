@@ -16,10 +16,11 @@ import {Shop} from 'views/Shop';
 import {Good} from 'views/Good';
 import {OrderNew} from 'views/OrderNew';
 import {Pay} from './views/Pay';
-import {AdminOrders} from './views/AdminOrders';
+import {Orders} from './views/Orders';
 
 import {AdminOrder} from './views/AdminOrder';
 import styled from 'styled-components';
+import {Order} from './views/Order';
 
 const Wrapper = styled.div`
   max-width: 500px;
@@ -66,7 +67,13 @@ function App() {
               <Pay/>
             </Route>
             <Route exact path="/admin/orders">
-              <AdminOrders/>
+              <Orders/>
+            </Route>
+            <Route exact path="/orders">
+              <Orders/>
+            </Route>
+            <Route exact path="/orders/:id">
+              <Order/>
             </Route>
             <Route exact path="/admin/orders/:id">
               <AdminOrder/>
