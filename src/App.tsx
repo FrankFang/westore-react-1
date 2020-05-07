@@ -19,66 +19,74 @@ import {Pay} from './views/Pay';
 import {AdminOrders} from './views/AdminOrders';
 
 import {AdminOrder} from './views/AdminOrder';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  max-width: 500px;
+  margin: 0 auto;
+`;
 
 function App() {
   return (
-    <SWRConfig value={{shouldRetryOnError: false}}>
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/admin/shops">
-            <Shops/>
-          </Route>
-          <Route exact path="/admin/shops/new">
-            <ShopNew/>
-          </Route>
-          <Route exact path="/admin/shops/:id">
-            <AdminShop/>
-          </Route>
-          <Route exact path="/shops/:id">
-            <Shop/>
-          </Route>
-          <Route exact path="/admin/shops/:id/edit">
-            <AdminShopEdit/>
-          </Route>
-          <Route exact path="/admin/shops/:shopId/goods/new">
-            <GoodNew/>
-          </Route>
-          <Route exact path="/admin/shops/:shopId/goods/:id">
-            <AdminGood/>
-          </Route>
-          <Route exact path="/shops/:shopId/goods/:id">
-            <Good/>
-          </Route>
-          <Route exact path="/admin/shops/:shopId/goods/:id/edit">
-            <GoodEdit/>
-          </Route>
-          <Route exact path="/orders/new">
-            <OrderNew/>
-          </Route>
-          <Route exact path="/orders/:id/pay">
-            <Pay/>
-          </Route>
-          <Route exact path="/admin/orders">
-            <AdminOrders/>
-          </Route>
-          <Route exact path="/admin/orders/:id">
-            <AdminOrder/>
-          </Route>
-          <Route exact path="/sign_in">
-            <SignIn/>
-          </Route>
-          <Route exact path="/cart">
-            <Cart/>
-          </Route>
-          <Route exact path="/me">
-            <Me/>
-          </Route>
-          <Redirect exact from="/" to="/admin/shops"/>
-          <Route path="*">
-          </Route>
-        </Switch>
-      </Router>
-    </SWRConfig>
+    <Wrapper>
+      <SWRConfig value={{shouldRetryOnError: false}}>
+        <Router history={history}>
+          <Switch>
+            <Route exact path="/admin/shops">
+              <Shops/>
+            </Route>
+            <Route exact path="/admin/shops/new">
+              <ShopNew/>
+            </Route>
+            <Route exact path="/admin/shops/:id">
+              <AdminShop/>
+            </Route>
+            <Route exact path="/shops/:id">
+              <Shop/>
+            </Route>
+            <Route exact path="/admin/shops/:id/edit">
+              <AdminShopEdit/>
+            </Route>
+            <Route exact path="/admin/shops/:shopId/goods/new">
+              <GoodNew/>
+            </Route>
+            <Route exact path="/admin/shops/:shopId/goods/:id">
+              <AdminGood/>
+            </Route>
+            <Route exact path="/shops/:shopId/goods/:id">
+              <Good/>
+            </Route>
+            <Route exact path="/admin/shops/:shopId/goods/:id/edit">
+              <GoodEdit/>
+            </Route>
+            <Route exact path="/orders/new">
+              <OrderNew/>
+            </Route>
+            <Route exact path="/orders/:id/pay">
+              <Pay/>
+            </Route>
+            <Route exact path="/admin/orders">
+              <AdminOrders/>
+            </Route>
+            <Route exact path="/admin/orders/:id">
+              <AdminOrder/>
+            </Route>
+            <Route exact path="/sign_in">
+              <SignIn/>
+            </Route>
+            <Route exact path="/cart">
+              <Cart/>
+            </Route>
+            <Route exact path="/me">
+              <Me/>
+            </Route>
+            <Redirect exact from="/" to="/admin/shops"/>
+            <Route path="*">
+            </Route>
+          </Switch>
+        </Router>
+      </SWRConfig>
+    </Wrapper>
   );
 }
 

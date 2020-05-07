@@ -14,6 +14,7 @@ import {Stretch} from '../components/Stretch';
 import {MainButton} from '../components/button/MainButton';
 import {defaultHttpClient} from '../lib/HttpClient';
 import {history} from '../lib/history';
+import {VSpace} from '../components/VSpace';
 
 const _OrderNew: React.FC<RouteComponentProps> = (props) => {
   const query = new HashQuery<{ shopId: string }>(props.location);
@@ -75,7 +76,11 @@ const _OrderNew: React.FC<RouteComponentProps> = (props) => {
         <Space/>
         购物车是空的
         <Space/>
-        <p><Link to={`/shops/${shopId}`}><MainButton>返回购物</MainButton></Link></p>
+        <p>
+          <Link to={`/shops/${shopId}`}><MainButton>返回购物</MainButton></Link>
+          <VSpace/>
+          <Link to={`/orders`}><MainButton>查看订单</MainButton></Link>
+        </p>
         <Space/>
       </Center>
     );
