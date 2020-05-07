@@ -75,6 +75,10 @@ const defaultHttpClient = new HttpClient(
           pathnameBeforeSignIn.value = history.location.pathname;
           history.push('/sign_in');
         });
+      } else if (response?.status === 404) {
+        showAlert('你访问的资源不存在', () => {
+          history.push('/');
+        });
       } else if (response?.status >= 400) {
         showAlert(`服务器繁忙，错误码：${response.status}`);
       }

@@ -12,6 +12,7 @@ import {Name} from '../components/Name';
 import {MainButton} from '../components/button/MainButton';
 import {MinorButton} from '../components/button/MinorButton';
 import {defaultHttpClient} from '../lib/HttpClient';
+import {Link} from 'react-router-dom';
 
 const GoodsList = styled.div`
   margin-top: 16px;
@@ -64,15 +65,21 @@ export const Cart: React.FC = (props) => {
     const {shop, goods} = response.data.data;
     updateShopCart(shopId, shop, goods);
   };
+  const createOrder = async (goods: (Good & { number: number })[]) => {
+    const response = await defaultHttpClient.post('/order', {
+      goods: goods.map(g => ({id: g.id, number: g.number}))
+    }, {autoHandlerError: true});
+    console.log(response);
+  };
   return (
     <Layout title="购物车" action={
       <span onClick={toggleEdit}>{edit ? '取消' : '编辑'}</span>
     }>
       {cart ?
-        cart.map(({shop, goods}) => <Panel>
-          <h2>{shop.name}</h2>
+        cart.map(({shop, goods}) => <Panel key={shop.id}>
+          <h2><Link to={`/shops/${shop.id}`}>{shop.name}</Link></h2>
           <GoodsList>
-            {goods.map(g => <Item>
+            {goods.map(g => <Item key={g.id}>
               <div className="cover">
                 <ShapedDiv>
                   <Img src={g.imgUrl}/>
@@ -89,7 +96,7 @@ export const Cart: React.FC = (props) => {
             <Amount>
               总计：<Money>{getAmount(goods)}</Money>
             </Amount>
-            <MainButton className="order">结算</MainButton>
+            <MainButton className="order" onClick={() => createOrder(goods)}>结算</MainButton>
           </Footer>
         </Panel>)
         :

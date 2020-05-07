@@ -35,17 +35,16 @@ const Item = styled(Link)`
 `;
 const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
   const shopId = props.match.params.id;
-  const {shop} = useShop(shopId)
+  const {shop, error} = useShop(shopId);
   const {
-    pages, loadMore, isReachingEnd, isEmpty, isLoadingMore
+    pages: goods, loadMore, isReachingEnd, isEmpty, isLoadingMore
   } = useSWRPages<number | null, PagedResources<Good>>(
     'shops',
     ({offset, withSWR}) => {
       offset = offset || 0;
       const {data: response} = withSWR(swr(['/goods', shopId, offset + 1, 10], async (url, shopId, pageNum, pageSize) => {
         return (await defaultHttpClient.get<PagedResources<Good>>(url, {
-          params: {pageNum, pageSize, shopId},
-          autoHandlerError: true
+          params: {pageNum, pageSize, shopId}, autoHandlerError: true
         })).data;
       }));
 
@@ -66,12 +65,12 @@ const _Shop: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
         index + 1 :
         null;
     },
-    []
+    [shopId]
   );
   return (
     <ShopLayout title="店铺详情" shop={shop}>
       <List>
-        {pages}
+        {goods}
       </List>
       {isEmpty ?
         <Center>
