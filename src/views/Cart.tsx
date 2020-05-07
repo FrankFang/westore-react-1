@@ -61,12 +61,6 @@ export const Cart: React.FC = (props) => {
     const {shop, goods} = response.data.data;
     updateShopCart(shopId, shop, goods);
   };
-  const createOrder = async (goods: (Good & { number: number })[]) => {
-    const response = await defaultHttpClient.post('/order', {
-      goods: goods.map(g => ({id: g.id, number: g.number}))
-    }, {autoHandlerError: true});
-    console.log(response);
-  };
   return (
     <Layout title="购物车" action={
       <span onClick={toggleEdit}>{edit ? '取消' : '编辑'}</span>
@@ -92,7 +86,9 @@ export const Cart: React.FC = (props) => {
             <Amount>
               总计：<Money>{getAmount(goods)}</Money>
             </Amount>
-            <MainButton className="order" onClick={() => createOrder(goods)}>结算</MainButton>
+            <Link to={`/orders/new?shopId=${shop.id}`}>
+              <MainButton className="order">结算</MainButton>
+            </Link>
           </Footer>
         </Panel>)
         :

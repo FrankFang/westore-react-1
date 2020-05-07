@@ -13,6 +13,7 @@ import {F} from '../components/Form';
 import {Stretch} from '../components/Stretch';
 import {MainButton} from '../components/button/MainButton';
 import {defaultHttpClient} from '../lib/HttpClient';
+import {history} from '../lib/history';
 
 const _OrderNew: React.FC<RouteComponentProps> = (props) => {
   const query = new HashQuery<{ shopId: string }>(props.location);
@@ -59,7 +60,7 @@ const _OrderNew: React.FC<RouteComponentProps> = (props) => {
         </F>
         <Panel>
           <Stretch>
-            <MainButton onClick={pay}>支付</MainButton>
+            <MainButton onClick={pay}>去支付</MainButton>
           </Stretch>
         </Panel>
       </Layout>

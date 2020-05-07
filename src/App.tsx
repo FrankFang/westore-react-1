@@ -15,6 +15,7 @@ import {SWRConfig} from 'swr';
 import {Shop} from 'views/Shop';
 import {Good} from 'views/Good';
 import {OrderNew} from 'views/OrderNew';
+import {Pay} from './views/Pay';
 
 
 function App() {
@@ -51,6 +52,9 @@ function App() {
           </Route>
           <Route exact path="/orders/new">
             <OrderNew/>
+          </Route>
+          <Route exact path="/orders/:id/pay">
+            <Pay/>
           </Route>
           <Route exact path="/sign_in">
             <SignIn/>
