@@ -1,14 +1,15 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import {withRouter} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {MainButton} from '../components/button/MainButton';
-import Icon from '../components/Icon';
 import wepay from 'images/wepay.svg';
 import alipay from 'images/alipay.svg';
 import {Img} from '../components/Img';
 import styled from 'styled-components';
 import {Stretch} from '../components/Stretch';
 import {showAlert} from '../components/Dialog';
+import {defaultHttpClient} from '../lib/HttpClient';
+import {history} from '../lib/history';
 
 const Payments = styled.div`
   margin-top: 32px;
@@ -26,9 +27,13 @@ const Wrapper = styled.div`
 const pay = () => {
   showAlert('抱歉，测试环境无法支付，请使用模拟支付');
 };
-export const _Pay: React.FC = () => {
-  const fakePay = () => {
-
+export const _Pay: React.FC<RouteComponentProps<{ id: string }>> = (props) => {
+  const orderId = props.match.params.id;
+  const fakePay = async () => {
+    await defaultHttpClient.patch(`/order/${orderId}`, {status: 'paid'}, {autoHandlerError: true});
+    showAlert('支付成功', () => {
+      history.push('/orders');
+    });
   };
   return (
     <Layout title="支付">
