@@ -18,10 +18,10 @@ const UnstyledButton = forwardRef<HTMLButtonElement, Props>((props, ref) => {
   const onClick: typeof outerOnClick = (e) => {
     if (autoDisable) {
       needCancelDisable.current = true;
-      timers.current[0] = setTimeout(() => {
+      timers.current[0] = window.setTimeout(() => {
         setDisabled(true);
       }, 0);
-      timers.current[1] = setTimeout(() => {
+      timers.current[1] = window.setTimeout(() => {
         if (needCancelDisable.current) {
           setDisabled(false);
           needCancelDisable.current = false;

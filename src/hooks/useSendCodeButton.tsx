@@ -10,7 +10,7 @@ const useSendCodeButton = (sendCode: React.MouseEventHandler<HTMLButtonElement>)
   useEffect(() => {
     if (codeSent) {
       setCountDown(10);
-      timer.current = setInterval(() => {
+      timer.current = window.setInterval(() => {
         setCountDown(x => x - 1);
       }, 1000);
       return () => {
